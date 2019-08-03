@@ -11,4 +11,4 @@ Requirements:
 How to configure the sketch to your personal needs? 
 Just change the parameters in the marked "User-Config" part in the sketch file before compiling and uploading it to your Arduino. 
 
-If you have any question just ask in the facebook group of Ben Levi: https://www.facebook.com/groups/BenLevi/files/
+If you have any question just ask in the facebook group of Ben Levi: https://www.facebook.com/groups/BenLevi/
