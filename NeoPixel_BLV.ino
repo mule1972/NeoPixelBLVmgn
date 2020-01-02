@@ -300,6 +300,11 @@ void GetSerialMessage(){
     #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
       while(SerialMessageComplete==false && Serial.available() > 0) 
     #endif 
+
+	//Arduino-Leonardo only
+	#if defined(__AVR_ATmega32U4__)
+      while(SerialMessageComplete==false && Serial1.available() > 0) 
+    #endif 
     {
       //Arduino-Mega only
       #if defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -309,6 +314,11 @@ void GetSerialMessage(){
       //Arduino-Pro only
       #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
         char inChar = Serial.read();
+      #endif 
+	  
+	  //Arduino-Leonardo only
+	  #if defined(__AVR_ATmega32U4__)
+        char inChar = Serial1.read();
       #endif 
 
       if(BeginMessage==false){
@@ -358,6 +368,13 @@ void setup()
   #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
     Serial.begin(57600);
     while(!Serial)
+    {;}
+  #endif 
+  
+  //Arduino-Leonardo only
+  #if defined(__AVR_ATmega32U4__)
+    Serial1.begin(57600);
+    while(!Serial1)
     {;}
   #endif 
 
@@ -440,6 +457,13 @@ void loop()
   //Arduino-Pro only
   #if defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__)
     if (Serial.available() > 0){
+      GetSerialMessage();
+    }  
+  #endif 
+
+  //Arduino-Leonardo only
+  #if defined(__AVR_ATmega32U4__)
+    if (Serial1.available() > 0){
       GetSerialMessage();
     }  
   #endif 
