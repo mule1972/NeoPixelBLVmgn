@@ -10,58 +10,78 @@ static uint32_t  ConvertColor(uint8_t red, uint8_t green, uint8_t blue) {
 // ***************************************
 // ********** User-Config Begin **********
 
-//Hotend
-bool NeoPixelTempHotendActive= true; //NeoPixel showing the hotend temperature (true = activated / false = deactivated)
-neoPixelType NeoPixelTempHotendType= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
-uint16_t NeoPixelTempHotendCount= 16; //Count of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-uint8_t NeoPixeTempHotendArduinoPin= 6; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-int NeoPixelTempHotendPixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-int NeoPixelTempHotendTempOffset= 0; //Minimum Temperature at which the first LED lights up
-int NeoPixelTempHotendScale= 20; //Temperature steps at which the following LEDs light up
-bool NeoPixelTempHotendAnimationActive= true; //Animation when the Hotend heats up (true = activated / false = deactivated)
-uint8_t NeopixelTempHotendBrightness= 8; //Overall brightness of the Neopixel-LEDs
-uint32_t NeoPixelTempHotendColorIdle= ConvertColor(255,255,255); //RGB values for specified status
-uint32_t NeoPixelTempHotendColorHeatUp= ConvertColor(255,64,64); //RGB values for specified status
-uint32_t NeoPixelTempHotendColorHeatUpDone= ConvertColor(255,0,0); //RGB values for specified status
-uint32_t NeoPixelTempHotendColorCoolDown= ConvertColor(0,0,255); //RGB values for specified status
-uint32_t NeoPixelTempHotendColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
+//NeoPixel1A (Hotend)
+bool NeoPixel1A_Active= true; //NeoPixel showing the hotend temperature (true = activated / false = deactivated)
+bool NeoPixel1A_Hotend1= true; //Use for Hotend1 (true = activated / false = deactivated)
+bool NeoPixel1A_Hotend2= false; //Use for Hotend2 (true = activated / false = deactivated)
+neoPixelType NeoPixel1A_Type= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
+uint16_t NeoPixel1A_Count= 16; //Count of Neopixel-LEDs (do not change if using Neopixel from the BOM)
+uint8_t NeoPixel1A_ArduinoPin= 6; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
+int NeoPixel1A_PixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
+int NeoPixel1A_TempOffset= 0; //Minimum Temperature at which the first LED lights up
+int NeoPixel1A_Scale= 20; //Temperature steps at which the following LEDs light up
+bool NeoPixel1A_AnimationActive= true; //Animation when the Hotend heats up (true = activated / false = deactivated)
+uint8_t NeoPixel1A_Brightness= 8; //Overall brightness of the Neopixel-LEDs
+uint32_t NeoPixel1A_ColorIdle= ConvertColor(255,255,255); //RGB values for specified status
+uint32_t NeoPixel1A_ColorHeatUp= ConvertColor(255,64,64); //RGB values for specified status
+uint32_t NeoPixel1A_ColorHeatUpDone= ConvertColor(255,0,0); //RGB values for specified status
+uint32_t NeoPixel1A_ColorCoolDown= ConvertColor(0,0,255); //RGB values for specified status
+uint32_t NeoPixel1A_ColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
 
-//Printer status
-bool NeoPixelPrinterStatActive= true; //NeoPixel showing the printer status (true = activated / false = deactivated)
-neoPixelType NeoPixelPrinterStatType= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
-uint16_t NeoPixelPrinterStatCount= 16; //Count of NeoPixel-LEDs (do not change if using Neopixel from the BOM)
-uint8_t NeoPixePrinterStatArduinoPin= 7; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-int NeoPixelPrinterStatPixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the startpoint clockwise (positive offset) or anti-clockwise (negative offset).
-bool NeoPixelPrinterStatAnimationActive= true; ///Animation for print progress (true = activated / false = deactivated)
-uint8_t NeopixelTempPrinterStatBrightness= 8; //Overall brightness of the Neopixel-LEDs
-uint32_t NeoPixelPrinterStatColorIdle= ConvertColor(255,255,255); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorPrinting= ConvertColor(64,255,64); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorPrintingDone= ConvertColor(0,255,0); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorStopped= ConvertColor(0,0,255); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorConfiguring= ConvertColor(255,255,0); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorPaused= ConvertColor(160,32,240); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorBusy= ConvertColor(255,255,0); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorPausing= ConvertColor(160,32,240); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorResuming= ConvertColor(255,255,0); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorFlashing= ConvertColor(255,255,0); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorDefault= ConvertColor(255,255,255); //RGB values for specified status
-uint32_t NeoPixelPrinterStatColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
+//NeoPixel1B (Hotend)
+bool NeoPixel1B_Active= false; //NeoPixel showing the hotend temperature (true = activated / false = deactivated)
+bool NeoPixel1B_Hotend1= false; //Use for Hotend1 (true = activated / false = deactivated)
+bool NeoPixel1B_Hotend2= false; //Use for Hotend2 (true = activated / false = deactivated)
+neoPixelType NeoPixel1B_Type= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
+uint16_t NeoPixel1B_Count= 16; //Count of Neopixel-LEDs (do not change if using Neopixel from the BOM)
+uint8_t NeoPixel1B_ArduinoPin= 6; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
+int NeoPixel1B_PixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
+int NeoPixel1B_TempOffset= 0; //Minimum Temperature at which the first LED lights up
+int NeoPixel1B_Scale= 20; //Temperature steps at which the following LEDs light up
+bool NeoPixel1B_AnimationActive= true; //Animation when the Hotend heats up (true = activated / false = deactivated)
+uint8_t NeoPixel1B_Brightness= 8; //Overall brightness of the Neopixel-LEDs
+uint32_t NeoPixel1B_ColorIdle= ConvertColor(255,255,255); //RGB values for specified status
+uint32_t NeoPixel1B_ColorHeatUp= ConvertColor(255,64,64); //RGB values for specified status
+uint32_t NeoPixel1B_ColorHeatUpDone= ConvertColor(255,0,0); //RGB values for specified status
+uint32_t NeoPixel1B_ColorCoolDown= ConvertColor(0,0,255); //RGB values for specified status
+uint32_t NeoPixel1B_ColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
 
-//Heatbed
-bool NeoPixelTempHeatbedActive= true; //NeoPixel showing the heatbed temperature (true = activated / false = deactivated)
-neoPixelType NeoPixelTempHeatbedType= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
-uint16_t NeoPixelTempHeatbedCount= 16; //Count of NeoPixel-LEDs (do not change if using Neopixel from the BOM)
-uint8_t NeoPixeTempHeatbedArduinoPin= 8; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-int NeoPixelTempHeatbedPixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-int NeoPixelTempHeatbedTempOffset= 0; //Minimum Temperature at which the first LED lights up
-int NeoPixelTempHeatbedScale= 10; //Temperature steps at which the following LEDs light up
-bool NeoPixelTempHeatbedAnimationActive= true; //Animation when the Heatbed heats up (true = activated / false = deactivated)
-uint8_t NeopixelTempHeatbedBrightness= 8; //Overall brightness of the Neopixel-LEDs
-uint32_t NeoPixelTempHeatbedColorIdle= ConvertColor(255,255,255); //RGB values for specified status
-uint32_t NeoPixelTempHeatbedColorHeatUp= ConvertColor(255,64,64); //RGB values for specified status
-uint32_t NeoPixelTempHeatbedColorHeatUpDone= ConvertColor(255,0,0); //RGB values for specified status
-uint32_t NeoPixelTempHeatbedColorCoolDown= ConvertColor(0,0,255); //RGB values for specified status
-uint32_t NeoPixelTempHeatbedColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
+//NeoPixel2 (Printer status)
+bool NeoPixel2_Active= true; //NeoPixel showing the printer status (true = activated / false = deactivated)
+neoPixelType NeoPixel2_Type= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
+uint16_t NeoPixel2_Count= 16; //Count of NeoPixel-LEDs (do not change if using Neopixel from the BOM)
+uint8_t NeoPixel2_ArduinoPin= 7; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
+int NeoPixel2_PixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the startpoint clockwise (positive offset) or anti-clockwise (negative offset).
+bool NeoPixel2_AnimationActive= true; ///Animation for print progress (true = activated / false = deactivated)
+uint8_t NeoPixel2_Brightness= 8; //Overall brightness of the Neopixel-LEDs
+uint32_t NeoPixel2_ColorIdle= ConvertColor(255,255,255); //RGB values for specified status
+uint32_t NeoPixel2_ColorPrinting= ConvertColor(64,255,64); //RGB values for specified status
+uint32_t NeoPixel2_ColorPrintingDone= ConvertColor(0,255,0); //RGB values for specified status
+uint32_t NeoPixel2_ColorStopped= ConvertColor(0,0,255); //RGB values for specified status
+uint32_t NeoPixel2_ColorConfiguring= ConvertColor(255,255,0); //RGB values for specified status
+uint32_t NeoPixel2_ColorPaused= ConvertColor(160,32,240); //RGB values for specified status
+uint32_t NeoPixel2_ColorBusy= ConvertColor(255,255,0); //RGB values for specified status
+uint32_t NeoPixel2_ColorPausing= ConvertColor(160,32,240); //RGB values for specified status
+uint32_t NeoPixel2_ColorResuming= ConvertColor(255,255,0); //RGB values for specified status
+uint32_t NeoPixel2_ColorFlashing= ConvertColor(255,255,0); //RGB values for specified status
+uint32_t NeoPixel2_ColorDefault= ConvertColor(255,255,255); //RGB values for specified status
+uint32_t NeoPixel2_ColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
+
+//NeoPixel3 (Heatbed)
+bool NeoPixel3_Active= true; //NeoPixel showing the heatbed temperature (true = activated / false = deactivated)
+neoPixelType NeoPixel3_Type= NEO_GRB + NEO_KHZ800; //Neopixel type (do not change if using NeoPixel from the BOM)
+uint16_t NeoPixel3_Count= 16; //Count of NeoPixel-LEDs (do not change if using Neopixel from the BOM)
+uint8_t NeoPixel3_ArduinoPin= 8; //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
+int NeoPixel3_PixelOffset= 0; //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
+int NeoPixel3_TempOffset= 0; //Minimum Temperature at which the first LED lights up
+int NeoPixel3_Scale= 10; //Temperature steps at which the following LEDs light up
+bool NeoPixel3_AnimationActive= true; //Animation when the Heatbed heats up (true = activated / false = deactivated)
+uint8_t NeoPixel3_Brightness= 8; //Overall brightness of the Neopixel-LEDs
+uint32_t NeoPixel3_ColorIdle= ConvertColor(255,255,255); //RGB values for specified status
+uint32_t NeoPixel3_ColorHeatUp= ConvertColor(255,64,64); //RGB values for specified status
+uint32_t NeoPixel3_ColorHeatUpDone= ConvertColor(255,0,0); //RGB values for specified status
+uint32_t NeoPixel3_ColorCoolDown= ConvertColor(0,0,255); //RGB values for specified status
+uint32_t NeoPixel3_ColorAnimation= ConvertColor(0,0,0); //RGB values for specified status
 
 // ********** User-Config End **********
 // *************************************
@@ -75,7 +95,10 @@ unsigned long NeoPixelTimerRefresh = millis();
 String SerialMessage;
 bool SerialMessageComplete = false;
 
-int SetTempHotend=0;
+int SetTempHotend1=0;
+int SetTempHotend2=0;
+int ActTempHotend1=0;
+int ActTempHotend2=0;
 int SetTempHeatbed=0;
 
 void NeoPixelComplete();
@@ -93,9 +116,10 @@ class NeoPatterns : public Adafruit_NeoPixel
     }
 };
 
-NeoPatterns NeoPixelTempHotend(NeoPixelTempHotendCount, NeoPixeTempHotendArduinoPin, NeoPixelTempHotendType, &NeoPixelComplete);
-NeoPatterns NeoPixelPrinterStat(NeoPixelPrinterStatCount, NeoPixePrinterStatArduinoPin, NeoPixelPrinterStatType, &NeoPixelComplete);
-NeoPatterns NeoPixelTempHeatbed(NeoPixelTempHeatbedCount, NeoPixeTempHeatbedArduinoPin, NeoPixelTempHeatbedType, &NeoPixelComplete);
+NeoPatterns NeoPixel1A(NeoPixel1A_Count, NeoPixel1A_ArduinoPin, NeoPixel1A_Type, &NeoPixelComplete);
+NeoPatterns NeoPixel1B(NeoPixel1A_Count, NeoPixel1B_ArduinoPin, NeoPixel1B_Type, &NeoPixelComplete);
+NeoPatterns NeoPixel2(NeoPixel2_Count, NeoPixel2_ArduinoPin, NeoPixel2_Type, &NeoPixelComplete);
+NeoPatterns NeoPixel3(NeoPixel3_Count, NeoPixel3_ArduinoPin, NeoPixel3_Type, &NeoPixelComplete);
 
 class NeoPixelAnimation {
   public:
@@ -105,21 +129,26 @@ class NeoPixelAnimation {
   int RangeEnd;
   int Running;
 };
-NeoPixelAnimation NeoPixelTempHotendAnimation;
-NeoPixelAnimation NeoPixelPrinterStatAnimation;
-NeoPixelAnimation NeoPixelTempHeatbedAnimation;
+NeoPixelAnimation NeoPixel1A_Animation;
+NeoPixelAnimation NeoPixel1B_Animation;
+NeoPixelAnimation NeoPixel2_Animation;
+NeoPixelAnimation NeoPixel3_Animation;
 
 class PanelDueMessage {
   public:
   char Status;
   float ActTempHeatbed;
-  float ActTempHotend;
+  float ActTempHotend1;
+  float ActTempHotend2;
   float ActiveTempHeatbed;
-  float ActiveTempHotend;
+  float ActiveTempHotend1;
+  float ActiveTempHotend2;
   float StandbyTempHeatbed;
-  float StandbyTempHotend;
+  float StandbyTempHotend1;
+  float StandbyTempHotend2;
   int HeaterStatusHeatbed;
-  int HeaterStatusHotend;
+  int HeaterStatusHotend1;
+  int HeaterStatusHotend2;
   float FractionPrinted;
   bool UpdatePending;
 };
@@ -144,6 +173,7 @@ static int ConvertPosition2PixelIndex(int PixelCount, int PixelOffset, int Posit
 
 void AnalyzeSerialMessage() {
   Printer.UpdatePending = false;
+  // HeaterStatus 0= Off / 1= Standby / 2= Active / 3= Fault / 4= Tuning
   if (JsonParseRoot(SerialMessage,"status",0) != ""){
 	  Printer.Status = JsonParseRoot(SerialMessage,"status",0).charAt(0);
 	  Printer.UpdatePending = true;
@@ -153,7 +183,11 @@ void AnalyzeSerialMessage() {
 	  Printer.UpdatePending = true;
 	}
   if (JsonParseRoot(SerialMessage,"heaters",2) != ""){
-    Printer.ActTempHotend = JsonParseRoot(SerialMessage,"heaters",2).toFloat();
+    Printer.ActTempHotend1 = JsonParseRoot(SerialMessage,"heaters",2).toFloat();
+    Printer.UpdatePending = true;
+  }
+  if (JsonParseRoot(SerialMessage,"heaters",3) != ""){
+    Printer.ActTempHotend2 = JsonParseRoot(SerialMessage,"heaters",3).toFloat();
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"active",1) != ""){
@@ -161,7 +195,11 @@ void AnalyzeSerialMessage() {
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"active",2) != ""){
-    Printer.ActiveTempHotend = JsonParseRoot(SerialMessage,"active",2).toFloat();
+    Printer.ActiveTempHotend1 = JsonParseRoot(SerialMessage,"active",2).toFloat();
+    Printer.UpdatePending = true;
+  }
+  if (JsonParseRoot(SerialMessage,"active",3) != ""){
+    Printer.ActiveTempHotend2 = JsonParseRoot(SerialMessage,"active",3).toFloat();
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"standby",1) != ""){
@@ -169,7 +207,11 @@ void AnalyzeSerialMessage() {
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"standby",2) != ""){
-    Printer.StandbyTempHotend = JsonParseRoot(SerialMessage,"standby",2).toFloat();
+    Printer.StandbyTempHotend1 = JsonParseRoot(SerialMessage,"standby",2).toFloat();
+    Printer.UpdatePending = true;
+  }
+  if (JsonParseRoot(SerialMessage,"standby",3) != ""){
+    Printer.StandbyTempHotend2 = JsonParseRoot(SerialMessage,"standby",3).toFloat();
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"hstat",1) != ""){
@@ -177,7 +219,11 @@ void AnalyzeSerialMessage() {
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"hstat",2) != ""){
-    Printer.HeaterStatusHotend = JsonParseRoot(SerialMessage,"hstat",2).toFloat();
+    Printer.HeaterStatusHotend1 = JsonParseRoot(SerialMessage,"hstat",2).toFloat();
+    Printer.UpdatePending = true;
+  }
+  if (JsonParseRoot(SerialMessage,"hstat",3) != ""){
+    Printer.HeaterStatusHotend2 = JsonParseRoot(SerialMessage,"hstat",3).toFloat();
     Printer.UpdatePending = true;
   }
   if (JsonParseRoot(SerialMessage,"fraction_printed",0) != ""){
@@ -186,7 +232,7 @@ void AnalyzeSerialMessage() {
 	}
   #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL2_ACTIVE)
   	if (Printer.UpdatePending == true){
- 		  Serial.println("StatusUpdate: Status= "+String(Printer.Status)+" / ActualTHb= "+Printer.ActTempHeatbed+" / ActualTHe= "+Printer.ActTempHotend+" / ActiveTHb= "+Printer.ActiveTempHeatbed+" / ActiveTHe= "+Printer.ActiveTempHotend+" / StandbyTHb= "+Printer.StandbyTempHeatbed+" / StandbyTHe= "+Printer.StandbyTempHotend+" / StatusHb= "+Printer.HeaterStatusHeatbed+" / StatusHe= "+Printer.HeaterStatusHotend+" / PrintProgress= "+Printer.FractionPrinted);
+ 		  Serial.println("StatusUpdate: Status= "+String(Printer.Status)+" / ActualTHb= "+Printer.ActTempHeatbed+" / ActualTHe1= "+Printer.ActTempHotend1+" / ActualTHe2= "+Printer.ActTempHotend2+" / ActiveTHb= "+Printer.ActiveTempHeatbed+" / ActiveTHe1= "+Printer.ActiveTempHotend1+" / ActiveTHe2= "+Printer.ActiveTempHotend2+" / StandbyTHb= "+Printer.StandbyTempHeatbed+" / StandbyTHe1= "+Printer.StandbyTempHotend1+" / StandbyTHe2= "+Printer.StandbyTempHotend2+" / StatusHb= "+Printer.HeaterStatusHeatbed+" / StatusHe1= "+Printer.HeaterStatusHotend1+" / StatusHe2= "+Printer.HeaterStatusHotend2+" / PrintProgress= "+Printer.FractionPrinted);
   	}
   	else{
 //  		  Serial.println("Error: JsonObjectValue");
@@ -379,66 +425,86 @@ void setup()
   #endif 
 
   //Default start values for animations
-  NeoPixelTempHotendAnimation.Position = 0;
-  NeoPixelTempHotendAnimation.Position_Memory = 0;
-  NeoPixelTempHotendAnimation.RangeBegin = 0;
-  NeoPixelTempHotendAnimation.RangeEnd = 0;
-  NeoPixelTempHotendAnimation.Running = false;
+  NeoPixel1A_Animation.Position = 0;
+  NeoPixel1A_Animation.Position_Memory = 0;
+  NeoPixel1A_Animation.RangeBegin = 0;
+  NeoPixel1A_Animation.RangeEnd = 0;
+  NeoPixel1A_Animation.Running = false;
+
+  NeoPixel1B_Animation.Position = 0;
+  NeoPixel1B_Animation.Position_Memory = 0;
+  NeoPixel1B_Animation.RangeBegin = 0;
+  NeoPixel1B_Animation.RangeEnd = 0;
+  NeoPixel1B_Animation.Running = false;
   
-  NeoPixelPrinterStatAnimation.Position = 0;
-  NeoPixelPrinterStatAnimation.Position_Memory = 0;
-  NeoPixelPrinterStatAnimation.RangeBegin = 0;
-  NeoPixelPrinterStatAnimation.RangeEnd = 0;
-  NeoPixelPrinterStatAnimation.Running = false;
+  NeoPixel2_Animation.Position = 0;
+  NeoPixel2_Animation.Position_Memory = 0;
+  NeoPixel2_Animation.RangeBegin = 0;
+  NeoPixel2_Animation.RangeEnd = 0;
+  NeoPixel2_Animation.Running = false;
   
-  NeoPixelTempHeatbedAnimation.Position = 0;
-  NeoPixelTempHeatbedAnimation.Position_Memory = 0;
-  NeoPixelTempHeatbedAnimation.RangeBegin = 0;
-  NeoPixelTempHeatbedAnimation.RangeEnd = 0;
-  NeoPixelTempHeatbedAnimation.Running = false;
+  NeoPixel3_Animation.Position = 0;
+  NeoPixel3_Animation.Position_Memory = 0;
+  NeoPixel3_Animation.RangeBegin = 0;
+  NeoPixel3_Animation.RangeEnd = 0;
+  NeoPixel3_Animation.Running = false;
 
   Printer.Status = ' ';
   Printer.ActTempHeatbed = 0.0;
-  Printer.ActTempHotend = 0.0;
+  Printer.ActTempHotend1 = 0.0;
+  Printer.ActTempHotend2 = 0.0;
   Printer.ActiveTempHeatbed = 0.0;
-  Printer.ActiveTempHotend = 0.0;
+  Printer.ActiveTempHotend1 = 0.0;
+  Printer.ActiveTempHotend2 = 0.0;
   Printer.StandbyTempHeatbed = 0.0;
-  Printer.StandbyTempHotend = 0.0;
+  Printer.StandbyTempHotend1 = 0.0;
+  Printer.StandbyTempHotend2 = 0.0;
   Printer.HeaterStatusHeatbed = 0.0;
-  Printer.HeaterStatusHotend = 0.0;
+  Printer.HeaterStatusHotend1 = 0.0;
+  Printer.HeaterStatusHotend2 = 0.0;
   Printer.FractionPrinted = 0.0;
   Printer.UpdatePending = false;
 
   #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
     DebugPrinter.ActTempHeatbed = 0.0;
-    DebugPrinter.ActTempHotend = 0.0;
+    DebugPrinter.ActTempHotend1 = 0.0;
+    DebugPrinter.ActTempHotend2 = 0.0;
     DebugPrinter.ActiveTempHeatbed = 0.0;
-    DebugPrinter.ActiveTempHotend = 0.0;
+    DebugPrinter.ActiveTempHotend1 = 0.0;
+    DebugPrinter.ActiveTempHotend2 = 0.0;
     DebugPrinter.StandbyTempHeatbed = 0.0;
-    DebugPrinter.StandbyTempHotend = 0.0;
+    DebugPrinter.StandbyTempHotend1 = 0.0;
+    DebugPrinter.StandbyTempHotend2 = 0.0;
     DebugPrinter.HeaterStatusHeatbed = 0.0;
-    DebugPrinter.HeaterStatusHotend = 0.0;
+    DebugPrinter.HeaterStatusHotend1 = 0.0;
+    DebugPrinter.HeaterStatusHotend2 = 0.0;
     DebugPrinter.FractionPrinted = 0.0;
   #endif 
 
   // Initialize Neopixels
-  if (NeoPixelTempHotendActive == true){
-    NeoPixelTempHotend.begin();
-    NeoPixelTempHotend.setBrightness(NeopixelTempHotendBrightness);
-    NeoPixelTempHotend.fill(ConvertColor(0,0,0));
-    NeoPixelTempHotend.show();
+  if (NeoPixel1A_Active == true){
+    NeoPixel1A.begin();
+    NeoPixel1A.setBrightness(NeoPixel1A_Brightness);
+    NeoPixel1A.fill(ConvertColor(0,0,0));
+    NeoPixel1A.show();
   }
-  if (NeoPixelPrinterStatActive == true){
-    NeoPixelPrinterStat.begin();
-    NeoPixelPrinterStat.setBrightness(NeopixelTempPrinterStatBrightness);
-    NeoPixelPrinterStat.fill(ConvertColor(0,0,0));
-    NeoPixelPrinterStat.show();
+  if (NeoPixel1B_Active == true){
+    NeoPixel1B.begin();
+    NeoPixel1B.setBrightness(NeoPixel1B_Brightness);
+    NeoPixel1B.fill(ConvertColor(0,0,0));
+    NeoPixel1B.show();
   }
-  if (NeoPixelTempHeatbedActive == true){
-    NeoPixelTempHeatbed.begin();
-    NeoPixelTempHeatbed.setBrightness(NeopixelTempHeatbedBrightness);
-    NeoPixelTempHeatbed.fill(ConvertColor(0,0,0));
-    NeoPixelTempHeatbed.show();
+  if (NeoPixel2_Active == true){
+    NeoPixel2.begin();
+    NeoPixel2.setBrightness(NeoPixel2_Brightness);
+    NeoPixel2.fill(ConvertColor(0,0,0));
+    NeoPixel2.show();
+  }
+  if (NeoPixel3_Active == true){
+    NeoPixel3.begin();
+    NeoPixel3.setBrightness(NeoPixel3_Brightness);
+    NeoPixel3.fill(ConvertColor(0,0,0));
+    NeoPixel3.show();
   }
 }
 
@@ -482,8 +548,13 @@ void loop()
           Serial.println("SerialMessage= "+SerialMessage);
           Serial.println("");
         }
-        if (((Printer.ActTempHotend > DebugPrinter.ActTempHotend) && (Printer.ActTempHotend / DebugPrinter.ActTempHotend) > 2) || ((Printer.ActTempHotend < DebugPrinter.ActTempHotend) && (DebugPrinter.ActTempHotend / Printer.ActTempHotend) > 2)){
-           Serial.println("High Delta ActTempHotend: Act="+String(Printer.ActTempHotend) + " / Memory= "+String(DebugPrinter.ActTempHotend));
+        if (((Printer.ActTempHotend1 > DebugPrinter.ActTempHotend1) && (Printer.ActTempHotend1 / DebugPrinter.ActTempHotend1) > 2) || ((Printer.ActTempHotend1 < DebugPrinter.ActTempHotend1) && (DebugPrinter.ActTempHotend1 / Printer.ActTempHotend1) > 2)){
+           Serial.println("High Delta ActTempHotend: Act="+String(Printer.ActTempHotend1) + " / Memory= "+String(DebugPrinter.ActTempHotend1));
+           Serial.println("SerialMessage= "+SerialMessage);
+           Serial.println("");
+        }
+        if (((Printer.ActTempHotend2 > DebugPrinter.ActTempHotend2) && (Printer.ActTempHotend1 / DebugPrinter.ActTempHotend2) > 2) || ((Printer.ActTempHotend2 < DebugPrinter.ActTempHotend2) && (DebugPrinter.ActTempHotend2 / Printer.ActTempHotend2) > 2)){
+           Serial.println("High Delta ActTempHotend: Act="+String(Printer.ActTempHotend2) + " / Memory= "+String(DebugPrinter.ActTempHotend2));
            Serial.println("SerialMessage= "+SerialMessage);
            Serial.println("");
         }
@@ -492,8 +563,13 @@ void loop()
           Serial.println("SerialMessage= "+SerialMessage);
           Serial.println("");
         }
-        if (((Printer.ActiveTempHotend > DebugPrinter.ActiveTempHotend) && (Printer.ActiveTempHotend / DebugPrinter.ActiveTempHotend) > 2) || ((Printer.ActiveTempHotend < DebugPrinter.ActiveTempHotend) && (DebugPrinter.ActiveTempHotend / Printer.ActiveTempHotend) > 2)){
-          Serial.println("High Delta ActiveTempHotend: Act="+String(Printer.ActiveTempHotend) + " / Memory= "+String(DebugPrinter.ActiveTempHotend));
+        if (((Printer.ActiveTempHotend1 > DebugPrinter.ActiveTempHotend1) && (Printer.ActiveTempHotend1 / DebugPrinter.ActiveTempHotend1) > 2) || ((Printer.ActiveTempHotend1 < DebugPrinter.ActiveTempHotend1) && (DebugPrinter.ActiveTempHotend1 / Printer.ActiveTempHotend1) > 2)){
+          Serial.println("High Delta ActiveTempHotend: Act="+String(Printer.ActiveTempHotend1) + " / Memory= "+String(DebugPrinter.ActiveTempHotend1));
+          Serial.println("SerialMessage= "+SerialMessage);
+          Serial.println("");
+        }
+        if (((Printer.ActiveTempHotend2 > DebugPrinter.ActiveTempHotend2) && (Printer.ActiveTempHotend2 / DebugPrinter.ActiveTempHotend2) > 2) || ((Printer.ActiveTempHotend2 < DebugPrinter.ActiveTempHotend2) && (DebugPrinter.ActiveTempHotend2 / Printer.ActiveTempHotend2) > 2)){
+          Serial.println("High Delta ActiveTempHotend: Act="+String(Printer.ActiveTempHotend2) + " / Memory= "+String(DebugPrinter.ActiveTempHotend2));
           Serial.println("SerialMessage= "+SerialMessage);
           Serial.println("");
         }
@@ -502,8 +578,13 @@ void loop()
           Serial.println("SerialMessage= "+SerialMessage);
           Serial.println("");
         }
-        if (((Printer.StandbyTempHotend > DebugPrinter.StandbyTempHotend) && (Printer.StandbyTempHotend / DebugPrinter.StandbyTempHotend) > 2) || ((Printer.StandbyTempHotend < DebugPrinter.StandbyTempHotend) && (DebugPrinter.StandbyTempHotend / Printer.StandbyTempHotend) > 2)){
-          Serial.println("High Delta StandbyTempHotend: Act="+String(Printer.StandbyTempHotend) + " / Memory= "+String(DebugPrinter.StandbyTempHotend));
+        if (((Printer.StandbyTempHotend1 > DebugPrinter.StandbyTempHotend1) && (Printer.StandbyTempHotend1 / DebugPrinter.StandbyTempHotend1) > 2) || ((Printer.StandbyTempHotend1 < DebugPrinter.StandbyTempHotend1) && (DebugPrinter.StandbyTempHotend1 / Printer.StandbyTempHotend1) > 2)){
+          Serial.println("High Delta StandbyTempHotend1: Act="+String(Printer.StandbyTempHotend1) + " / Memory= "+String(DebugPrinter.StandbyTempHotend1));
+          Serial.println("SerialMessage= "+SerialMessage);
+          Serial.println("");
+        }
+        if (((Printer.StandbyTempHotend2 > DebugPrinter.StandbyTempHotend2) && (Printer.StandbyTempHotend2 / DebugPrinter.StandbyTempHotend2) > 2) || ((Printer.StandbyTempHotend2 < DebugPrinter.StandbyTempHotend2) && (DebugPrinter.StandbyTempHotend2 / Printer.StandbyTempHotend2) > 2)){
+          Serial.println("High Delta StandbyTempHotend2: Act="+String(Printer.StandbyTempHotend2) + " / Memory= "+String(DebugPrinter.StandbyTempHotend2));
           Serial.println("SerialMessage= "+SerialMessage);
           Serial.println("");
         }
@@ -513,75 +594,172 @@ void loop()
           Serial.println("");
         }
         DebugPrinter.ActTempHeatbed = Printer.ActTempHeatbed;
-        DebugPrinter.ActTempHotend = Printer.ActTempHotend;
+        DebugPrinter.ActTempHotend1 = Printer.ActTempHotend1;
+        DebugPrinter.ActTempHotend1 = Printer.ActTempHotend2;
         DebugPrinter.ActiveTempHeatbed = Printer.ActiveTempHeatbed;
-        DebugPrinter.ActiveTempHotend = Printer.ActiveTempHotend;
+        DebugPrinter.ActiveTempHotend1 = Printer.ActiveTempHotend1;
+        DebugPrinter.ActiveTempHotend2 = Printer.ActiveTempHotend2;
         DebugPrinter.StandbyTempHeatbed = Printer.StandbyTempHeatbed;
-        DebugPrinter.StandbyTempHotend = Printer.StandbyTempHotend;
+        DebugPrinter.StandbyTempHotend1 = Printer.StandbyTempHotend1;
+        DebugPrinter.StandbyTempHotend2 = Printer.StandbyTempHotend2;
         DebugPrinter.FractionPrinted = Printer.FractionPrinted;
       #endif 
       
-      //Update Neopixel Hotend
-      if (NeoPixelTempHotendActive == true){
+      //Update Neopixel Hotend1
+      if (NeoPixel1A_Active == true){
         //Initialize AnimationRange
-        NeoPixelTempHotendAnimation.RangeBegin = 0;
-        NeoPixelTempHotendAnimation.RangeEnd = 0;
+        NeoPixel1A_Animation.RangeBegin = 0;
+        NeoPixel1A_Animation.RangeEnd = 0;
+
+        SetTempHotend1=0;
+        ActTempHotend1=0;
+        if (NeoPixel1A_Hotend1 == true){
+          if (Printer.HeaterStatusHotend1 == 2){
+            SetTempHotend1=Printer.ActiveTempHotend1;
+            ActTempHotend1=Printer.ActTempHotend1;
+          }
+          else if (Printer.HeaterStatusHotend1 == 1){
+            SetTempHotend1=Printer.StandbyTempHotend1;
+            ActTempHotend1=Printer.ActTempHotend1;
+          }
+          else if (Printer.HeaterStatusHotend1 == 0){
+            if (NeoPixel1A_Hotend2 == true){
+              if (Printer.HeaterStatusHotend2 == 2){
+                SetTempHotend1=Printer.ActiveTempHotend2;
+                ActTempHotend1=Printer.ActTempHotend2;
+              }
+              else if (Printer.HeaterStatusHotend2 == 1){
+                SetTempHotend1=Printer.StandbyTempHotend2;
+                ActTempHotend1=Printer.ActTempHotend2;
+              }
+            }  
+          }  
+        }
+        else if (NeoPixel1A_Hotend2 == true)
+        {
+          if (Printer.HeaterStatusHotend2 == 2)
+          {
+            SetTempHotend1=Printer.ActiveTempHotend2;
+            ActTempHotend1=Printer.ActTempHotend2;
+          }
+          else if (Printer.HeaterStatusHotend2 == 1){
+            SetTempHotend1=Printer.StandbyTempHotend2;
+            ActTempHotend1=Printer.ActTempHotend2;
+          }
+        }  
   
-        //NeoPixel: Bed-Temperature   
-        SetTempHotend=0;
-        if (Printer.HeaterStatusHotend == 2)
+        for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel1A_Count; NeoPixelPosition++)
         {
-          SetTempHotend=Printer.ActiveTempHotend;
-        }
-        else if (Printer.HeaterStatusHotend == 1){
-          SetTempHotend=Printer.StandbyTempHotend;
-        }
-        for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixelTempHotendCount; NeoPixelPosition++)
-        {
-          if((((Printer.ActTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) < NeoPixelPosition) && (((SetTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) >= NeoPixelPosition)){
-            NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelPosition),NeoPixelTempHotendColorHeatUp);
+          if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
+            NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorHeatUp);
             //Define Animation-Range
-            if (NeoPixelTempHotendAnimation.RangeBegin == 0) {
-              NeoPixelTempHotendAnimation.RangeBegin = NeoPixelPosition;
-              NeoPixelTempHotendAnimation.RangeEnd = NeoPixelPosition;
+            if (NeoPixel1A_Animation.RangeBegin == 0) {
+              NeoPixel1A_Animation.RangeBegin = NeoPixelPosition;
+              NeoPixel1A_Animation.RangeEnd = NeoPixelPosition;
             } else {
-              NeoPixelTempHotendAnimation.RangeEnd++;
+              NeoPixel1A_Animation.RangeEnd++;
             }
           }
-          else if((((Printer.ActTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) >= NeoPixelPosition)){
-            NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelPosition),NeoPixelTempHotendColorHeatUpDone);
+          else if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
+            NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorHeatUpDone);
           }
-          else if((((Printer.ActTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixelTempHotendTempOffset) / NeoPixelTempHotendScale) < NeoPixelPosition)){
-            NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelPosition),NeoPixelTempHotendColorCoolDown);
+          else if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition)){
+            NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorCoolDown);
           }
           else{
-            NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelPosition),NeoPixelTempHotendColorIdle);
+            NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorIdle);
+          }
+        }
+      }
+
+      //Update Neopixel Hotend2
+      if (NeoPixel1B_Active == true){
+        //Initialize AnimationRange
+        NeoPixel1B_Animation.RangeBegin = 0;
+        NeoPixel1B_Animation.RangeEnd = 0;
+  
+        SetTempHotend2=0;
+        ActTempHotend2=0;
+        if (NeoPixel1B_Hotend1 == true){
+          if (Printer.HeaterStatusHotend1 == 2){
+            SetTempHotend2=Printer.ActiveTempHotend1;
+            ActTempHotend2=Printer.ActTempHotend1;
+          }
+          else if (Printer.HeaterStatusHotend1 == 1){
+            SetTempHotend2=Printer.StandbyTempHotend1;
+            ActTempHotend2=Printer.ActTempHotend1;
+          }
+          else if (Printer.HeaterStatusHotend1 == 0){
+            if (NeoPixel1B_Hotend2 == true){
+              if (Printer.HeaterStatusHotend2 == 2)
+              {
+                SetTempHotend2=Printer.ActiveTempHotend2;
+                ActTempHotend2=Printer.ActTempHotend2;
+              }
+              else if (Printer.HeaterStatusHotend2 == 1){
+                SetTempHotend2=Printer.StandbyTempHotend2;
+                ActTempHotend2=Printer.ActTempHotend2;
+              }
+            }
+          }    
+        }
+        else if (NeoPixel1B_Hotend2 == true){
+          if (Printer.HeaterStatusHotend2 == 2){
+            SetTempHotend2=Printer.ActiveTempHotend2;
+            ActTempHotend2=Printer.ActTempHotend2;
+          }
+          else if (Printer.HeaterStatusHotend2 == 1){
+            SetTempHotend2=Printer.StandbyTempHotend2;
+            ActTempHotend2=Printer.ActTempHotend2;
+          }
+        }  
+
+        for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel1B_Count; NeoPixelPosition++)
+        {
+          if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
+            NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorHeatUp);
+            //Define Animation-Range
+            if (NeoPixel1B_Animation.RangeBegin == 0) {
+              NeoPixel1B_Animation.RangeBegin = NeoPixelPosition;
+              NeoPixel1B_Animation.RangeEnd = NeoPixelPosition;
+            } else {
+              NeoPixel1B_Animation.RangeEnd++;
+            }
+          }
+          else if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
+            NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorHeatUpDone);
+          }
+          else if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition)){
+            NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorCoolDown);
+          }
+          else{
+            NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorIdle);
           }
         }
       }
         
       //Update Neopixel PrinterStatus
-      if (NeoPixelPrinterStatActive == true){
+      if (NeoPixel2_Active == true){
         //Initialize AnimationRange Hotend
-        NeoPixelPrinterStatAnimation.RangeBegin = 0;
-        NeoPixelPrinterStatAnimation.RangeEnd = 0;
+        NeoPixel2_Animation.RangeBegin = 0;
+        NeoPixel2_Animation.RangeEnd = 0;
   
         //NeoPixel: Printer-Status & Print-Progress
         if(Printer.Status == 'P'){ 
           //Display Print-Progress
-          for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixelPrinterStatCount; NeoPixelPosition++)
+          for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel2_Count; NeoPixelPosition++)
           {
-            if(NeoPixelPosition < (Printer.FractionPrinted * NeoPixelPrinterStatCount)){
-              NeoPixelPrinterStat.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPosition),NeoPixelPrinterStatColorPrintingDone);
+            if(NeoPixelPosition < (Printer.FractionPrinted * NeoPixel2_Count)){
+              NeoPixel2.setPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixelPosition),NeoPixel2_ColorPrintingDone);
             }
             else{
-              NeoPixelPrinterStat.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPosition),NeoPixelPrinterStatColorPrinting);
+              NeoPixel2.setPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixelPosition),NeoPixel2_ColorPrinting);
               //Define Animation-Range
-              if (NeoPixelPrinterStatAnimation.RangeBegin == 0) {
-                NeoPixelPrinterStatAnimation.RangeBegin = NeoPixelPosition;
-                NeoPixelPrinterStatAnimation.RangeEnd = NeoPixelPosition;
+              if (NeoPixel2_Animation.RangeBegin == 0) {
+                NeoPixel2_Animation.RangeBegin = NeoPixelPosition;
+                NeoPixel2_Animation.RangeEnd = NeoPixelPosition;
               } else {
-                NeoPixelPrinterStatAnimation.RangeEnd++;
+                NeoPixel2_Animation.RangeEnd++;
               }
             }
           }
@@ -600,44 +778,44 @@ void loop()
           switch (Printer.Status)
           {
             case 'I':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorIdle);
+              NeoPixel2.fill(NeoPixel2_ColorIdle);
               break;
             case 'P':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorPrinting);
+              NeoPixel2.fill(NeoPixel2_ColorPrinting);
               break;
             case 'S':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorStopped);
+              NeoPixel2.fill(NeoPixel2_ColorStopped);
               break;
             case 'C':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorConfiguring);
+              NeoPixel2.fill(NeoPixel2_ColorConfiguring);
               break;
             case 'A':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorPaused);
+              NeoPixel2.fill(NeoPixel2_ColorPaused);
               break;
             case 'D':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorBusy);
+              NeoPixel2.fill(NeoPixel2_ColorBusy);
               break;
             case 'R':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorPausing);
+              NeoPixel2.fill(NeoPixel2_ColorPausing);
               break;
             case 'B':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorResuming);
+              NeoPixel2.fill(NeoPixel2_ColorResuming);
               break;
             case 'F':
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorFlashing);
+              NeoPixel2.fill(NeoPixel2_ColorFlashing);
               break;
             default:
-              NeoPixelPrinterStat.fill(NeoPixelPrinterStatColorDefault);
+              NeoPixel2.fill(NeoPixel2_ColorDefault);
               break;
           }
         }
       }    
   
       //Update Neopixel Heatbed
-      if (NeoPixelTempHeatbedActive == true){
+      if (NeoPixel3_Active == true){
         //Initialize AnimationRange
-        NeoPixelTempHeatbedAnimation.RangeBegin = 0;
-        NeoPixelTempHeatbedAnimation.RangeEnd = 0;
+        NeoPixel3_Animation.RangeBegin = 0;
+        NeoPixel3_Animation.RangeEnd = 0;
   
         //NeoPixel: Bed-Temperature   
         SetTempHeatbed=0;
@@ -648,142 +826,179 @@ void loop()
         else if (Printer.HeaterStatusHeatbed == 1){
           SetTempHeatbed=Printer.StandbyTempHeatbed;
         }
-        for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixelTempHeatbedCount; NeoPixelPosition++)
+        for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel3_Count; NeoPixelPosition++)
         {
-          if((((Printer.ActTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) < NeoPixelPosition) && (((SetTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) >= NeoPixelPosition)){
-            NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelPosition),NeoPixelTempHeatbedColorHeatUp);
+          if((((Printer.ActTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) < NeoPixelPosition) && (((SetTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) >= NeoPixelPosition)){
+            NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixelPosition),NeoPixel3_ColorHeatUp);
             //Define Animation-Range
-            if (NeoPixelTempHeatbedAnimation.RangeBegin == 0) {
-              NeoPixelTempHeatbedAnimation.RangeBegin = NeoPixelPosition;
-              NeoPixelTempHeatbedAnimation.RangeEnd = NeoPixelPosition;
+            if (NeoPixel3_Animation.RangeBegin == 0) {
+              NeoPixel3_Animation.RangeBegin = NeoPixelPosition;
+              NeoPixel3_Animation.RangeEnd = NeoPixelPosition;
             } else {
-              NeoPixelTempHeatbedAnimation.RangeEnd++;
+              NeoPixel3_Animation.RangeEnd++;
             }
           }
-          else if((((Printer.ActTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) >= NeoPixelPosition) && (((SetTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) >= NeoPixelPosition)){
-            NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelPosition),NeoPixelTempHeatbedColorHeatUpDone);
+          else if((((Printer.ActTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) >= NeoPixelPosition) && (((SetTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) >= NeoPixelPosition)){
+            NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixelPosition),NeoPixel3_ColorHeatUpDone);
           }
-          else if((((Printer.ActTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) >= NeoPixelPosition) && (((SetTempHeatbed - NeoPixelTempHeatbedTempOffset) / NeoPixelTempHeatbedScale) < NeoPixelPosition)){
-            NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelPosition),NeoPixelTempHeatbedColorCoolDown);
+          else if((((Printer.ActTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) >= NeoPixelPosition) && (((SetTempHeatbed - NeoPixel3_TempOffset) / NeoPixel3_Scale) < NeoPixelPosition)){
+            NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixelPosition),NeoPixel3_ColorCoolDown);
           }
           else{
-            NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelPosition),NeoPixelTempHeatbedColorIdle);
+            NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixelPosition),NeoPixel3_ColorIdle);
           }
         }
       }
     }  
 
-    //Animation Hotend
-    if (NeoPixelTempHotendAnimationActive == true){
+    //Animation Hotend1
+    if (NeoPixel1A_AnimationActive == true){
       //AnimationRange exists?
-      if (NeoPixelTempHotendAnimation.RangeBegin == 0){
-        NeoPixelTempHotendAnimation.Running = false;
+      if (NeoPixel1A_Animation.RangeBegin == 0){
+        NeoPixel1A_Animation.Running = false;
       }
       else{
         //Animation initialize?
-        if (NeoPixelTempHotendAnimation.Running == false){
-            NeoPixelTempHotendAnimation.Running = true;
-            NeoPixelTempHotendAnimation.Position = NeoPixelTempHotendAnimation.RangeBegin;
-            NeoPixelTempHotendAnimation.Position_Memory = 0;
+        if (NeoPixel1A_Animation.Running == false){
+            NeoPixel1A_Animation.Running = true;
+            NeoPixel1A_Animation.Position = NeoPixel1A_Animation.RangeBegin;
+            NeoPixel1A_Animation.Position_Memory = 0;
         }
         //Restart animation at new position?
-        if (NeoPixelTempHotendAnimation.Position < NeoPixelTempHotendAnimation.RangeBegin){
-          NeoPixelTempHotendAnimation.Position = NeoPixelTempHotendAnimation.RangeBegin;
+        if (NeoPixel1A_Animation.Position < NeoPixel1A_Animation.RangeBegin){
+          NeoPixel1A_Animation.Position = NeoPixel1A_Animation.RangeBegin;
         }
-        if (NeoPixelTempHotendAnimation.Position_Memory != NeoPixelTempHotendAnimation.Position && NeoPixelTempHotendAnimation.Position_Memory >= NeoPixelTempHotendAnimation.RangeBegin){
-          NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelTempHotendAnimation.Position_Memory),NeoPixelTempHotendColorHeatUp);
+        if (NeoPixel1A_Animation.Position_Memory != NeoPixel1A_Animation.Position && NeoPixel1A_Animation.Position_Memory >= NeoPixel1A_Animation.RangeBegin){
+          NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixel1A_Animation.Position_Memory),NeoPixel1A_ColorHeatUp);
         }
-        if (NeoPixelTempHotend.getPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelTempHotendAnimation.Position)) == NeoPixelTempHotendColorAnimation){
-            NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelTempHotendAnimation.Position),NeoPixelTempHotendColorHeatUp);
+        if (NeoPixel1A.getPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixel1A_Animation.Position)) == NeoPixel1A_ColorAnimation){
+            NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixel1A_Animation.Position),NeoPixel1A_ColorHeatUp);
         }
         else{
-          NeoPixelTempHotendAnimation.Position_Memory = NeoPixelTempHotendAnimation.Position;
-          NeoPixelTempHotend.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHotendCount,NeoPixelTempHotendPixelOffset,NeoPixelTempHotendAnimation.Position),NeoPixelTempHotendColorAnimation);
+          NeoPixel1A_Animation.Position_Memory = NeoPixel1A_Animation.Position;
+          NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixel1A_Animation.Position),NeoPixel1A_ColorAnimation);
         }
-        NeoPixelTempHotendAnimation.Position++;
-        if (NeoPixelTempHotendAnimation.Position > NeoPixelTempHotendAnimation.RangeEnd){
-          NeoPixelTempHotendAnimation.Position = NeoPixelTempHotendAnimation.RangeBegin;
+        NeoPixel1A_Animation.Position++;
+        if (NeoPixel1A_Animation.Position > NeoPixel1A_Animation.RangeEnd){
+          NeoPixel1A_Animation.Position = NeoPixel1A_Animation.RangeBegin;
+        }
+      }
+    }
+
+    //Animation Hotend2
+    if (NeoPixel1B_AnimationActive == true){
+      //AnimationRange exists?
+      if (NeoPixel1B_Animation.RangeBegin == 0){
+        NeoPixel1B_Animation.Running = false;
+      }
+      else{
+        //Animation initialize?
+        if (NeoPixel1B_Animation.Running == false){
+            NeoPixel1B_Animation.Running = true;
+            NeoPixel1B_Animation.Position = NeoPixel1B_Animation.RangeBegin;
+            NeoPixel1B_Animation.Position_Memory = 0;
+        }
+        //Restart animation at new position?
+        if (NeoPixel1B_Animation.Position < NeoPixel1B_Animation.RangeBegin){
+          NeoPixel1B_Animation.Position = NeoPixel1B_Animation.RangeBegin;
+        }
+        if (NeoPixel1B_Animation.Position_Memory != NeoPixel1B_Animation.Position && NeoPixel1B_Animation.Position_Memory >= NeoPixel1B_Animation.RangeBegin){
+          NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixel1B_Animation.Position_Memory),NeoPixel1B_ColorHeatUp);
+        }
+        if (NeoPixel1B.getPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixel1B_Animation.Position)) == NeoPixel1B_ColorAnimation){
+            NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixel1B_Animation.Position),NeoPixel1B_ColorHeatUp);
+        }
+        else{
+          NeoPixel1B_Animation.Position_Memory = NeoPixel1B_Animation.Position;
+          NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixel1B_Animation.Position),NeoPixel1B_ColorAnimation);
+        }
+        NeoPixel1B_Animation.Position++;
+        if (NeoPixel1B_Animation.Position > NeoPixel1B_Animation.RangeEnd){
+          NeoPixel1B_Animation.Position = NeoPixel1B_Animation.RangeBegin;
         }
       }
     }
 
     //Animation PrinterStatus
-    if (NeoPixelPrinterStatAnimationActive == true){
+    if (NeoPixel2_AnimationActive == true){
       //AnimationRange exists?
-      if (NeoPixelPrinterStatAnimation.RangeBegin == 0){
-        NeoPixelPrinterStatAnimation.Running = false;
+      if (NeoPixel2_Animation.RangeBegin == 0){
+        NeoPixel2_Animation.Running = false;
       }
       else{
         //Animation initialize?
-        if (NeoPixelPrinterStatAnimation.Running == false){
-            NeoPixelPrinterStatAnimation.Running = true;
-            NeoPixelPrinterStatAnimation.Position = NeoPixelPrinterStatAnimation.RangeBegin;
-            NeoPixelPrinterStatAnimation.Position_Memory = 0;
+        if (NeoPixel2_Animation.Running == false){
+            NeoPixel2_Animation.Running = true;
+            NeoPixel2_Animation.Position = NeoPixel2_Animation.RangeBegin;
+            NeoPixel2_Animation.Position_Memory = 0;
         }
         //Restart animation at new position?
-        if (NeoPixelPrinterStatAnimation.Position < NeoPixelPrinterStatAnimation.RangeBegin){
-          NeoPixelPrinterStatAnimation.Position = NeoPixelPrinterStatAnimation.RangeBegin;
+        if (NeoPixel2_Animation.Position < NeoPixel2_Animation.RangeBegin){
+          NeoPixel2_Animation.Position = NeoPixel2_Animation.RangeBegin;
         }
-        if (NeoPixelPrinterStatAnimation.Position_Memory != NeoPixelPrinterStatAnimation.Position && NeoPixelPrinterStatAnimation.Position_Memory >= NeoPixelPrinterStatAnimation.RangeBegin){
-          NeoPixelPrinterStat.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPrinterStatAnimation.Position_Memory),NeoPixelPrinterStatColorPrinting);
+        if (NeoPixel2_Animation.Position_Memory != NeoPixel2_Animation.Position && NeoPixel2_Animation.Position_Memory >= NeoPixel2_Animation.RangeBegin){
+          NeoPixel2.setPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixel2_Animation.Position_Memory),NeoPixel2_ColorPrinting);
         }
-        if (NeoPixelPrinterStat.getPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPrinterStatAnimation.Position)) == NeoPixelPrinterStatColorAnimation){
-            NeoPixelPrinterStat.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPrinterStatAnimation.Position),NeoPixelPrinterStatColorPrinting);
+        if (NeoPixel2.getPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixel2_Animation.Position)) == NeoPixel2_ColorAnimation){
+            NeoPixel2.setPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixel2_Animation.Position),NeoPixel2_ColorPrinting);
         }
         else{
-          NeoPixelPrinterStatAnimation.Position_Memory = NeoPixelPrinterStatAnimation.Position;
-          NeoPixelPrinterStat.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterStatCount,NeoPixelPrinterStatPixelOffset,NeoPixelPrinterStatAnimation.Position),NeoPixelPrinterStatColorAnimation);
+          NeoPixel2_Animation.Position_Memory = NeoPixel2_Animation.Position;
+          NeoPixel2.setPixelColor(ConvertPosition2PixelIndex(NeoPixel2_Count,NeoPixel2_PixelOffset,NeoPixel2_Animation.Position),NeoPixel2_ColorAnimation);
         }
-        NeoPixelPrinterStatAnimation.Position++;
-        if (NeoPixelPrinterStatAnimation.Position > NeoPixelPrinterStatAnimation.RangeEnd){
-          NeoPixelPrinterStatAnimation.Position = NeoPixelPrinterStatAnimation.RangeBegin;
+        NeoPixel2_Animation.Position++;
+        if (NeoPixel2_Animation.Position > NeoPixel2_Animation.RangeEnd){
+          NeoPixel2_Animation.Position = NeoPixel2_Animation.RangeBegin;
         }
       }
     }
             
     //Animation Heatbed
-    if (NeoPixelTempHeatbedAnimationActive == true){
+    if (NeoPixel3_AnimationActive == true){
       //AnimationRange exists?
-      if (NeoPixelTempHeatbedAnimation.RangeBegin == 0){
-        NeoPixelTempHeatbedAnimation.Running = false;
+      if (NeoPixel3_Animation.RangeBegin == 0){
+        NeoPixel3_Animation.Running = false;
       }
       else{
         //Animation initialize?
-        if (NeoPixelTempHeatbedAnimation.Running == false){
-            NeoPixelTempHeatbedAnimation.Running = true;
-            NeoPixelTempHeatbedAnimation.Position = NeoPixelTempHeatbedAnimation.RangeBegin;
-            NeoPixelTempHeatbedAnimation.Position_Memory = 0;
+        if (NeoPixel3_Animation.Running == false){
+            NeoPixel3_Animation.Running = true;
+            NeoPixel3_Animation.Position = NeoPixel3_Animation.RangeBegin;
+            NeoPixel3_Animation.Position_Memory = 0;
         }
         //Restart animation at new position?
-        if (NeoPixelTempHeatbedAnimation.Position < NeoPixelTempHeatbedAnimation.RangeBegin){
-          NeoPixelTempHeatbedAnimation.Position = NeoPixelTempHeatbedAnimation.RangeBegin;
+        if (NeoPixel3_Animation.Position < NeoPixel3_Animation.RangeBegin){
+          NeoPixel3_Animation.Position = NeoPixel3_Animation.RangeBegin;
         }
-        if (NeoPixelTempHeatbedAnimation.Position_Memory != NeoPixelTempHeatbedAnimation.Position && NeoPixelTempHeatbedAnimation.Position_Memory >= NeoPixelTempHeatbedAnimation.RangeBegin){
-          NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelTempHeatbedAnimation.Position_Memory),NeoPixelTempHeatbedColorHeatUp);
+        if (NeoPixel3_Animation.Position_Memory != NeoPixel3_Animation.Position && NeoPixel3_Animation.Position_Memory >= NeoPixel3_Animation.RangeBegin){
+          NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixel3_Animation.Position_Memory),NeoPixel3_ColorHeatUp);
         }
-        if (NeoPixelTempHeatbed.getPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelTempHeatbedAnimation.Position)) == NeoPixelTempHeatbedColorAnimation){
-            NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelTempHeatbedAnimation.Position),NeoPixelTempHeatbedColorHeatUp);
+        if (NeoPixel3.getPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixel3_Animation.Position)) == NeoPixel3_ColorAnimation){
+            NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixel3_Animation.Position),NeoPixel3_ColorHeatUp);
         }
         else{
-          NeoPixelTempHeatbedAnimation.Position_Memory = NeoPixelTempHeatbedAnimation.Position;
-          NeoPixelTempHeatbed.setPixelColor(ConvertPosition2PixelIndex(NeoPixelTempHeatbedCount,NeoPixelTempHeatbedPixelOffset,NeoPixelTempHeatbedAnimation.Position),NeoPixelTempHeatbedColorAnimation);
+          NeoPixel3_Animation.Position_Memory = NeoPixel3_Animation.Position;
+          NeoPixel3.setPixelColor(ConvertPosition2PixelIndex(NeoPixel3_Count,NeoPixel3_PixelOffset,NeoPixel3_Animation.Position),NeoPixel3_ColorAnimation);
         }
-        NeoPixelTempHeatbedAnimation.Position++;
-        if (NeoPixelTempHeatbedAnimation.Position > NeoPixelTempHeatbedAnimation.RangeEnd){
-          NeoPixelTempHeatbedAnimation.Position = NeoPixelTempHeatbedAnimation.RangeBegin;
+        NeoPixel3_Animation.Position++;
+        if (NeoPixel3_Animation.Position > NeoPixel3_Animation.RangeEnd){
+          NeoPixel3_Animation.Position = NeoPixel3_Animation.RangeBegin;
         }
       }
     }
 
     //Neopixel refresh
-    if (NeoPixelTempHotendActive == true){
-      NeoPixelTempHotend.show();
+    if (NeoPixel1A_Active == true){
+      NeoPixel1A.show();
     }  
-    if (NeoPixelPrinterStatActive == true){
-      NeoPixelPrinterStat.show();   
+    if (NeoPixel1B_Active == true){
+      NeoPixel1B.show();
+    }  
+    if (NeoPixel2_Active == true){
+      NeoPixel2.show();   
     }   
-    if (NeoPixelTempHeatbedActive == true){
-      NeoPixelTempHeatbed.show();
+    if (NeoPixel3_Active == true){
+      NeoPixel3.show();
     }  
   }
 }
