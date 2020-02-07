@@ -95,10 +95,8 @@ unsigned long NeoPixelTimerRefresh = millis();
 String SerialMessage;
 bool SerialMessageComplete = false;
 
-int SetTempHotend1=0;
-int SetTempHotend2=0;
-int ActTempHotend1=0;
-int ActTempHotend2=0;
+int SetTempHotend=0;
+int ActTempHotend=0;
 int SetTempHeatbed=0;
 
 void NeoPixelComplete();
@@ -553,7 +551,7 @@ void loop()
            Serial.println("SerialMessage= "+SerialMessage);
            Serial.println("");
         }
-        if (((Printer.ActTempHotend2 > DebugPrinter.ActTempHotend2) && (Printer.ActTempHotend1 / DebugPrinter.ActTempHotend2) > 2) || ((Printer.ActTempHotend2 < DebugPrinter.ActTempHotend2) && (DebugPrinter.ActTempHotend2 / Printer.ActTempHotend2) > 2)){
+        if (((Printer.ActTempHotend2 > DebugPrinter.ActTempHotend2) && (Printer.ActTempHotend2 / DebugPrinter.ActTempHotend2) > 2) || ((Printer.ActTempHotend2 < DebugPrinter.ActTempHotend2) && (DebugPrinter.ActTempHotend2 / Printer.ActTempHotend2) > 2)){
            Serial.println("High Delta ActTempHotend: Act="+String(Printer.ActTempHotend2) + " / Memory= "+String(DebugPrinter.ActTempHotend2));
            Serial.println("SerialMessage= "+SerialMessage);
            Serial.println("");
@@ -595,7 +593,7 @@ void loop()
         }
         DebugPrinter.ActTempHeatbed = Printer.ActTempHeatbed;
         DebugPrinter.ActTempHotend1 = Printer.ActTempHotend1;
-        DebugPrinter.ActTempHotend1 = Printer.ActTempHotend2;
+        DebugPrinter.ActTempHotend2 = Printer.ActTempHotend2;
         DebugPrinter.ActiveTempHeatbed = Printer.ActiveTempHeatbed;
         DebugPrinter.ActiveTempHotend1 = Printer.ActiveTempHotend1;
         DebugPrinter.ActiveTempHotend2 = Printer.ActiveTempHotend2;
@@ -605,33 +603,37 @@ void loop()
         DebugPrinter.FractionPrinted = Printer.FractionPrinted;
       #endif 
       
-      //Update Neopixel Hotend1
+      //Update Neopixel Hotend1A
       if (NeoPixel1A_Active == true){
         //Initialize AnimationRange
         NeoPixel1A_Animation.RangeBegin = 0;
         NeoPixel1A_Animation.RangeEnd = 0;
 
-        SetTempHotend1=0;
-        ActTempHotend1=0;
+        SetTempHotend=0;
+        ActTempHotend=0;
         if (NeoPixel1A_Hotend1 == true){
           if (Printer.HeaterStatusHotend1 == 2){
-            SetTempHotend1=Printer.ActiveTempHotend1;
-            ActTempHotend1=Printer.ActTempHotend1;
+            SetTempHotend=Printer.ActiveTempHotend1;
+            ActTempHotend=Printer.ActTempHotend1;
           }
           else if (Printer.HeaterStatusHotend1 == 1){
-            SetTempHotend1=Printer.StandbyTempHotend1;
-            ActTempHotend1=Printer.ActTempHotend1;
+            SetTempHotend=Printer.StandbyTempHotend1;
+            ActTempHotend=Printer.ActTempHotend1;
           }
           else if (Printer.HeaterStatusHotend1 == 0){
             if (NeoPixel1A_Hotend2 == true){
               if (Printer.HeaterStatusHotend2 == 2){
-                SetTempHotend1=Printer.ActiveTempHotend2;
-                ActTempHotend1=Printer.ActTempHotend2;
+                SetTempHotend=Printer.ActiveTempHotend2;
+                ActTempHotend=Printer.ActTempHotend2;
               }
               else if (Printer.HeaterStatusHotend2 == 1){
-                SetTempHotend1=Printer.StandbyTempHotend2;
-                ActTempHotend1=Printer.ActTempHotend2;
+                SetTempHotend=Printer.StandbyTempHotend2;
+                ActTempHotend=Printer.ActTempHotend2;
               }
+              else if (Printer.HeaterStatusHotend2 == 0){
+				ActTempHotend=Printer.ActTempHotend1;
+			  }
+			  
             }  
           }  
         }
@@ -639,18 +641,21 @@ void loop()
         {
           if (Printer.HeaterStatusHotend2 == 2)
           {
-            SetTempHotend1=Printer.ActiveTempHotend2;
-            ActTempHotend1=Printer.ActTempHotend2;
+            SetTempHotend=Printer.ActiveTempHotend2;
+            ActTempHotend=Printer.ActTempHotend2;
           }
           else if (Printer.HeaterStatusHotend2 == 1){
-            SetTempHotend1=Printer.StandbyTempHotend2;
-            ActTempHotend1=Printer.ActTempHotend2;
+            SetTempHotend=Printer.StandbyTempHotend2;
+            ActTempHotend=Printer.ActTempHotend2;
+		  }
+          else if (Printer.HeaterStatusHotend2 == 0){
+            ActTempHotend=Printer.ActTempHotend2;
           }
         }  
   
         for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel1A_Count; NeoPixelPosition++)
         {
-          if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
+          if((((ActTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition) && (((SetTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
             NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorHeatUp);
             //Define Animation-Range
             if (NeoPixel1A_Animation.RangeBegin == 0) {
@@ -660,10 +665,10 @@ void loop()
               NeoPixel1A_Animation.RangeEnd++;
             }
           }
-          else if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
+          else if((((ActTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition)){
             NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorHeatUpDone);
           }
-          else if((((ActTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend1 - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition)){
+          else if((((ActTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixel1A_TempOffset) / NeoPixel1A_Scale) < NeoPixelPosition)){
             NeoPixel1A.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1A_Count,NeoPixel1A_PixelOffset,NeoPixelPosition),NeoPixel1A_ColorCoolDown);
           }
           else{
@@ -672,51 +677,57 @@ void loop()
         }
       }
 
-      //Update Neopixel Hotend2
+      //Update Neopixel Hotend1B
       if (NeoPixel1B_Active == true){
         //Initialize AnimationRange
         NeoPixel1B_Animation.RangeBegin = 0;
         NeoPixel1B_Animation.RangeEnd = 0;
   
-        SetTempHotend2=0;
-        ActTempHotend2=0;
+        SetTempHotend=0;
+        ActTempHotend=0;
         if (NeoPixel1B_Hotend1 == true){
           if (Printer.HeaterStatusHotend1 == 2){
-            SetTempHotend2=Printer.ActiveTempHotend1;
-            ActTempHotend2=Printer.ActTempHotend1;
+            SetTempHotend=Printer.ActiveTempHotend1;
+            ActTempHotend=Printer.ActTempHotend1;
           }
           else if (Printer.HeaterStatusHotend1 == 1){
-            SetTempHotend2=Printer.StandbyTempHotend1;
-            ActTempHotend2=Printer.ActTempHotend1;
+            SetTempHotend=Printer.StandbyTempHotend1;
+            ActTempHotend=Printer.ActTempHotend1;
           }
           else if (Printer.HeaterStatusHotend1 == 0){
             if (NeoPixel1B_Hotend2 == true){
               if (Printer.HeaterStatusHotend2 == 2)
               {
-                SetTempHotend2=Printer.ActiveTempHotend2;
-                ActTempHotend2=Printer.ActTempHotend2;
+                SetTempHotend=Printer.ActiveTempHotend2;
+                ActTempHotend=Printer.ActTempHotend2;
               }
               else if (Printer.HeaterStatusHotend2 == 1){
-                SetTempHotend2=Printer.StandbyTempHotend2;
-                ActTempHotend2=Printer.ActTempHotend2;
+                SetTempHotend=Printer.StandbyTempHotend2;
+                ActTempHotend=Printer.ActTempHotend2;
               }
+              else if (Printer.HeaterStatusHotend2 == 0){
+				ActTempHotend=Printer.ActTempHotend1;
+			  }
             }
           }    
         }
         else if (NeoPixel1B_Hotend2 == true){
           if (Printer.HeaterStatusHotend2 == 2){
-            SetTempHotend2=Printer.ActiveTempHotend2;
-            ActTempHotend2=Printer.ActTempHotend2;
+            SetTempHotend=Printer.ActiveTempHotend2;
+            ActTempHotend=Printer.ActTempHotend2;
           }
           else if (Printer.HeaterStatusHotend2 == 1){
-            SetTempHotend2=Printer.StandbyTempHotend2;
-            ActTempHotend2=Printer.ActTempHotend2;
+            SetTempHotend=Printer.StandbyTempHotend2;
+            ActTempHotend=Printer.ActTempHotend2;
+          }
+          else if (Printer.HeaterStatusHotend2 == 0){
+            ActTempHotend=Printer.ActTempHotend2;
           }
         }  
 
         for (int NeoPixelPosition = 1; NeoPixelPosition <= NeoPixel1B_Count; NeoPixelPosition++)
         {
-          if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
+          if((((ActTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition) && (((SetTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
             NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorHeatUp);
             //Define Animation-Range
             if (NeoPixel1B_Animation.RangeBegin == 0) {
@@ -726,10 +737,10 @@ void loop()
               NeoPixel1B_Animation.RangeEnd++;
             }
           }
-          else if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
+          else if((((ActTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition)){
             NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorHeatUpDone);
           }
-          else if((((Printer.ActTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend2 - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition)){
+          else if((((ActTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) >= NeoPixelPosition) && (((SetTempHotend - NeoPixel1B_TempOffset) / NeoPixel1B_Scale) < NeoPixelPosition)){
             NeoPixel1B.setPixelColor(ConvertPosition2PixelIndex(NeoPixel1B_Count,NeoPixel1B_PixelOffset,NeoPixelPosition),NeoPixel1B_ColorCoolDown);
           }
           else{
