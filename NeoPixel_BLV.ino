@@ -634,7 +634,10 @@ void loop()
 				ActTempHotend=Printer.ActTempHotend1;
 			  }
 			  
-            }  
+            }
+			else {
+				ActTempHotend=Printer.ActTempHotend1;
+			}
           }  
         }
         else if (NeoPixel1A_Hotend2 == true)
@@ -709,6 +712,9 @@ void loop()
 				ActTempHotend=Printer.ActTempHotend1;
 			  }
             }
+			else {
+				ActTempHotend=Printer.ActTempHotend1;
+			}
           }    
         }
         else if (NeoPixel1B_Hotend2 == true){
