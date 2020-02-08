@@ -483,199 +483,244 @@ void setup()
   #endif 
 
   // Startup-Animation
-
-  if (NeoPixelStartupAnimation == true && NeoPixel1A_Count == NeoPixel1B_Count && NeoPixel1A_Count == NeoPixel2_Count && NeoPixel1A_Count == NeoPixel3_Count) {
-    int i;
-    NeoPixel1A.begin();
-    NeoPixel1B.begin();
-    NeoPixel2.begin();
-    NeoPixel3.begin();
-    for(i = 0; i < NeoPixel1A_Count; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setPixelColor(i, ConvertColor(255, 0, 0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setPixelColor(i, ConvertColor(255, 0, 0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setPixelColor(i, ConvertColor(0, 255, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setPixelColor(i, ConvertColor(0, 0, 255));
-      NeoPixel3.show();
-      delay(30);
-    }
-        for(i = 0; i < NeoPixel1A_Count; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setPixelColor(i, ConvertColor(0, 255, 0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setPixelColor(i, ConvertColor(0, 255, 0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setPixelColor(i, ConvertColor(0, 0, 255));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setPixelColor(i, ConvertColor(255, 0, 0));
-      NeoPixel3.show();
-      delay(30);
-    }
-        for(i = 0; i < NeoPixel1A_Count; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setPixelColor(i, ConvertColor(0, 0, 255));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setPixelColor(i, ConvertColor(0, 0, 255));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setPixelColor(i, ConvertColor(255, 0, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setPixelColor(i, ConvertColor(0, 255, 0));
-      NeoPixel3.show();
-      delay(30);
-    }
-    
-    for(i = 0; i < 255; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(255,0,0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(255,0,0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(0, 255, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(0, 0, 255));
-      NeoPixel3.show();
-      delay(1);
-    }
-    for(i = 255; i > 0; i--)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(255,0,0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(255,0,0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(0, 255, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(0, 0, 255));
-      NeoPixel3.show();
-      delay(1);
-    }
-    for(i = 0; i < 255; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(0,255,0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(0,255,0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(0, 0, 255));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(255, 0, 0));
-      NeoPixel3.show();
-      delay(1);
-    }
-    for(i = 255; i > 0; i--)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(0,255,0));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(0,255,0));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(0, 0, 255));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(255, 0, 0));
-      NeoPixel3.show();
-      delay(1);
-    }
-        for(i = 0; i < 255; i++)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(0,0,255));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(0,0,255));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(255, 0, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(0, 255, 0));
-      NeoPixel3.show();
-      delay(1);
-    }
-    for(i = 255; i > 0; i--)
-    {
-      NeoPixel1A.clear();
-      NeoPixel1A.setBrightness(i);
-      NeoPixel1A.fill(ConvertColor(0,0,255));
-      NeoPixel1A.show();
-      NeoPixel1B.clear();
-      NeoPixel1B.setBrightness(i);
-      NeoPixel1B.fill(ConvertColor(0,0,255));
-      NeoPixel1B.show();
-      NeoPixel2.clear();
-      NeoPixel2.setBrightness(i);
-      NeoPixel2.fill(ConvertColor(255, 0, 0));
-      NeoPixel2.show();
-      NeoPixel3.clear();
-      NeoPixel3.setBrightness(i);
-      NeoPixel3.fill(ConvertColor(0, 255, 0));
-      NeoPixel3.show();
-      delay(1);
-    }
-    NeoPixel1A.clear();
-    NeoPixel1A.setBrightness(255);
-    NeoPixel1A.fill(ConvertColor(255, 255, 255));
-    NeoPixel1A.show();
-    NeoPixel1B.clear();
-    NeoPixel1B.setBrightness(255);
-    NeoPixel1B.fill(ConvertColor(255, 255, 255));
-    NeoPixel1B.show();
-    NeoPixel2.clear();
-    NeoPixel2.setBrightness(255);
-    NeoPixel2.fill(ConvertColor(255, 255, 255));
-    NeoPixel2.show();
-    NeoPixel3.clear();
-    NeoPixel3.setBrightness(255);
-    NeoPixel3.fill(ConvertColor(255, 255, 255));
-    NeoPixel3.show();
-    delay(2500);
+  if (NeoPixelStartupAnimation == true)
+  {
+  	int NeoPixelCount = 0;
+  	bool NeoPixelStartupAnimation_Consistency = true;
+  	if (NeoPixel1A_Active == true) {
+  	  if (NeoPixelCount == 0) {
+    		NeoPixelCount = NeoPixel1A_Count;
+  	  }
+  	  else {
+    		if (NeoPixel1A_Count != NeoPixelCount) {
+    			NeoPixelStartupAnimation_Consistency = false;
+    		}
+  	  }
+  	}
+  	if (NeoPixel1B_Active == true) {
+  	  if (NeoPixelCount == 0) {
+    		NeoPixelCount = NeoPixel1B_Count;
+    	}
+    	else {
+    	  if (NeoPixel1B_Count != NeoPixelCount) {
+    			NeoPixelStartupAnimation_Consistency = false;
+    		}
+  	  }
+  	}
+  	if (NeoPixel2_Active == true) {
+  	  if (NeoPixelCount == 0) {
+    		NeoPixelCount = NeoPixel1B_Count;
+  	  }
+  	  else {
+    		if (NeoPixel2_Count != NeoPixelCount) {
+    			NeoPixelStartupAnimation_Consistency = false;
+    		}
+  	  }
+  	}
+  	if (NeoPixel3_Active == true) {
+  	  if (NeoPixelCount == 0) {
+    		NeoPixelCount = NeoPixel1B_Count;
+  	  }
+  	  else {
+    		if (NeoPixel3_Count != NeoPixelCount) {
+    			NeoPixelStartupAnimation_Consistency = false;
+    		}
+  	  }
+  	}
+  	
+  	if (NeoPixelCount > 0 && NeoPixelStartupAnimation_Consistency == true) {
+  		int i;
+  		NeoPixel1A.begin();
+  		NeoPixel1B.begin();
+  		NeoPixel2.begin();
+  		NeoPixel3.begin();
+  		for(i = 0; i < NeoPixel1A_Count; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setPixelColor(i, ConvertColor(255, 0, 0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setPixelColor(i, ConvertColor(255, 0, 0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setPixelColor(i, ConvertColor(0, 255, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setPixelColor(i, ConvertColor(0, 0, 255));
+  		  NeoPixel3.show();
+  		  delay(30);
+  		}
+  			for(i = 0; i < NeoPixel1A_Count; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setPixelColor(i, ConvertColor(0, 255, 0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setPixelColor(i, ConvertColor(0, 255, 0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setPixelColor(i, ConvertColor(0, 0, 255));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setPixelColor(i, ConvertColor(255, 0, 0));
+  		  NeoPixel3.show();
+  		  delay(30);
+  		}
+  			for(i = 0; i < NeoPixel1A_Count; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setPixelColor(i, ConvertColor(0, 0, 255));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setPixelColor(i, ConvertColor(0, 0, 255));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setPixelColor(i, ConvertColor(255, 0, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setPixelColor(i, ConvertColor(0, 255, 0));
+  		  NeoPixel3.show();
+  		  delay(30);
+  		}
+  		
+  		for(i = 0; i < 255; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(255,0,0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(255,0,0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(0, 255, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(0, 0, 255));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  		for(i = 255; i > 0; i--)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(255,0,0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(255,0,0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(0, 255, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(0, 0, 255));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  		for(i = 0; i < 255; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(0,255,0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(0,255,0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(0, 0, 255));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(255, 0, 0));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  		for(i = 255; i > 0; i--)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(0,255,0));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(0,255,0));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(0, 0, 255));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(255, 0, 0));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  			for(i = 0; i < 255; i++)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(0,0,255));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(0,0,255));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(255, 0, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(0, 255, 0));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  		for(i = 255; i > 0; i--)
+  		{
+  		  NeoPixel1A.clear();
+  		  NeoPixel1A.setBrightness(i);
+  		  NeoPixel1A.fill(ConvertColor(0,0,255));
+  		  NeoPixel1A.show();
+  		  NeoPixel1B.clear();
+  		  NeoPixel1B.setBrightness(i);
+  		  NeoPixel1B.fill(ConvertColor(0,0,255));
+  		  NeoPixel1B.show();
+  		  NeoPixel2.clear();
+  		  NeoPixel2.setBrightness(i);
+  		  NeoPixel2.fill(ConvertColor(255, 0, 0));
+  		  NeoPixel2.show();
+  		  NeoPixel3.clear();
+  		  NeoPixel3.setBrightness(i);
+  		  NeoPixel3.fill(ConvertColor(0, 255, 0));
+  		  NeoPixel3.show();
+  		  delay(1);
+  		}
+  		NeoPixel1A.clear();
+  		NeoPixel1A.setBrightness(255);
+  		NeoPixel1A.fill(ConvertColor(255, 255, 255));
+  		NeoPixel1A.show();
+  		NeoPixel1B.clear();
+  		NeoPixel1B.setBrightness(255);
+  		NeoPixel1B.fill(ConvertColor(255, 255, 255));
+  		NeoPixel1B.show();
+  		NeoPixel2.clear();
+  		NeoPixel2.setBrightness(255);
+  		NeoPixel2.fill(ConvertColor(255, 255, 255));
+  		NeoPixel2.show();
+  		NeoPixel3.clear();
+  		NeoPixel3.setBrightness(255);
+  		NeoPixel3.fill(ConvertColor(255, 255, 255));
+  		NeoPixel3.show();
+  		delay(2500);
+  	}	
   }  
 
   // Initialize Neopixels
