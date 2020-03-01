@@ -384,7 +384,7 @@ void setup()
   NeoPixelHeater_ColorCoolDown[0]= ConvertColor(0,0,255); //RGB values for specified status
   NeoPixelHeater_ColorAnimation[0]= ConvertColor(0,0,0); //RGB values for specified status
 
-  //NeoPixel#3 - Heater #1 (Hotend1)
+  //NeoPixel#3
   NeoPixelHeater_Active[1]= true; //NeoPixel showing the temperature of Heater1 (true = activated / false = deactivated)
   NeoPixelHeater_StartupAnimationType[1]= 1; //Startup animation type (1-3)
   NeoPixelHeater_ShowHeaters[1]= "1"; //Show temp of Heater n (multiple Heaters seperated by & / 0= Heatbed)
@@ -403,7 +403,7 @@ void setup()
   NeoPixelHeater_ColorAnimation[1]= ConvertColor(0,0,0); //RGB values for specified status
   
 /*
-  //NeoPixel#4 - Heater #2 (Hotend2)
+  //NeoPixel#4
   NeoPixelHeater_Active[2]= false; //NeoPixel showing the temperature of Heater2 (true = activated / false = deactivated)
   NeoPixelHeater_StartupAnimationType[2]= 1; //Startup animation type (1-3)
   NeoPixelHeater_ShowHeaters[2]= "2&3"; //Show temp of Heater n (multiple Heaters seperated by & / 0= Heatbed)
@@ -565,6 +565,7 @@ void setup()
           if (NeoPixelPrinterstatus_StartupAnimationType == 3) {NeoPixelPrinterstatus.setPixelColor(ConvertPosition2PixelIndex(NeoPixelPrinterstatus_LEDs,NeoPixelPrinterstatus_PixelOffset,(i+1),NeoPixelPrinterstatus_AnimationReverse), ConvertColor(0, 0, 255));}
           NeoPixelPrinterstatus.show();
         }
+        delay(30);
   		}
       //Startup Animation #1b
 			for(int i = 0; i < NeoPixelCount; i++) {
