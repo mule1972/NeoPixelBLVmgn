@@ -3,7 +3,7 @@
 //#define DEBUGLEVEL1_ACTIVE
 //#define DEBUGLEVEL2_ACTIVE
 
-// ************* V3.0 Beta 15 ************
+// ************* V3.0 Beta 15  ***********
 // ********** User-Config Begin **********
 
 //General
@@ -70,7 +70,7 @@
 #define NeoPixel1_ArduinoPin 7  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
 #define NeoPixel1_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
 #define NeoPixel1_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel1_AnimationActive false  //Animation when the Hotend heats up (true = activated / false = deactivated)
+#define NeoPixel1_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
 #define NeoPixel1_Reverse false  //Reverse display direction (false = default / true = reversed)
 #define NeoPixel1_Brightness 8  //Overall brightness of the Neopixel-LEDs
 
@@ -219,6 +219,7 @@ uint8_t NeoPixelID;
 uint8_t NeoPixelLEDID;
 bool ChangeDisplayPrinterObject;
 int HeaterID;
+bool InitialSerialMessageSuccess;
 
 Adafruit_NeoPixel *NeoPixel_Device[NumberNeoPixels];
 
@@ -569,6 +570,11 @@ void setup()
     NeoPixel_Device[NeoPixelID] = new Adafruit_NeoPixel(NeoPixelConfig[NeoPixelID].LEDs, NeoPixelConfig[NeoPixelID].ArduinoPin, NeoPixelConfig[NeoPixelID].Type);
   }  
 
+  // Initialize Neopixels
+  for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
+    if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->begin(); NeoPixel_Device[NeoPixelID]->show();}
+  }  
+
   //Set start values
   for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
     NeoPixelConfig[NeoPixelID].AnimationMemoryPosition = 0;
@@ -587,6 +593,8 @@ void setup()
   Printer.Status = ' ';
   Printer.FractionPrinted = 0.0;
   Printer.UpdatePending = false;
+
+  InitialSerialMessageSuccess = false;
 
   //Setup Serial Interface
   //Arduino-Mega & Co.
@@ -619,11 +627,6 @@ void setup()
     while(!Serial3)
     {;}
   #endif 
-  
-  // Initialize Neopixels
-  for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-    if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->begin(); NeoPixel_Device[NeoPixelID]->show();}
-  }  
   
   // Startup-Animation
   int NeoPixelCount = 0;
@@ -697,7 +700,7 @@ void setup()
         delay(1);
       }
       //Startup Animation #2b2
-      for(BrightnessID = 0; BrightnessID < 255; BrightnessID++)
+      for(BrightnessID = 255; BrightnessID >= 0; BrightnessID--)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
           if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
@@ -713,7 +716,7 @@ void setup()
         delay(1);
       }
       //Startup Animation #2c2
-      for(BrightnessID = 0; BrightnessID < 255; BrightnessID++)
+      for(BrightnessID = 255; BrightnessID >= 0; BrightnessID--)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
           if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
@@ -740,8 +743,13 @@ void loop()
   //Read serial
   GetSerialMessage();
 
+  //Wait for first complete SerialMessage before starting to display anything
+  if (InitialSerialMessageSuccess == false && Printer.UpdatePending == true) {
+    InitialSerialMessageSuccess = true;
+  }
+
   //NeopixelRefresh?
-  if ((millis() - NeoPixelTimerRefresh) >= NeopixelRefreshSpeed){
+  if ((millis() - NeoPixelTimerRefresh) >= NeopixelRefreshSpeed && InitialSerialMessageSuccess == true){
     NeoPixelTimerRefresh = millis();
 
     //Change PrinterObject?
