@@ -456,8 +456,8 @@ void GetSerialMessage() {
 void setup()
 {   
   // Initialize Variables
-  uint32_t AnimationColor;
-  int16_t BrightnessID;
+  uint32_t AnimationColor = ConvertColor(255, 0, 0);
+  int16_t BrightnessID = 0;
 
   NeoPixelConfig[0].Active = NeoPixel1_Active;
   NeoPixelConfig[0].StartupAnimationType = NeoPixel1_StartupAnimationType;
