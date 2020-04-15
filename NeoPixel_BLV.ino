@@ -67,8 +67,8 @@
 //NeoPixel#1
 #define NeoPixel1_Active true  //NeoPixel#1 (true = activated / false = deactivated)
 #define NeoPixel1_StartupAnimationType 3  //Startup animation type (1-3)
-#define NeoPixel1_DisplayPrinterObject 99  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel1_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency
+#define NeoPixel1_DisplayPrinterObject 99  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel1_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel1_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel1_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel1_ArduinoPin 7  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -81,8 +81,8 @@
 //NeoPixel#2
 #define NeoPixel2_Active true  //NeoPixel#2 (true = activated / false = deactivated)
 #define NeoPixel2_StartupAnimationType 1  //Startup animation type (1-3)
-#define NeoPixel2_DisplayPrinterObject 0  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel2_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency
+#define NeoPixel2_DisplayPrinterObject 0  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel2_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel2_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel2_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel2_ArduinoPin 6  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -95,8 +95,8 @@
 //NeoPixel#3
 #define NeoPixel3_Active true  //NeoPixel#3 (true = activated / false = deactivated)
 #define NeoPixel3_StartupAnimationType 2  //Startup animation type (1-3)
-#define NeoPixel3_DisplayPrinterObject 1  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel3_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency
+#define NeoPixel3_DisplayPrinterObject 1  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel3_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel3_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel3_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel3_ArduinoPin 8  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -109,8 +109,8 @@
 //NeoPixel#4
 #define NeoPixel4_Active false  //NeoPixel#4 (true = activated / false = deactivated)
 #define NeoPixel4_StartupAnimationType 1  //Startup animation type (1-3)
-#define NeoPixel4_DisplayPrinterObject 2  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel4_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency
+#define NeoPixel4_DisplayPrinterObject 2  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel4_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel4_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel4_LEDs 16  //Numbner of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel4_ArduinoPin 0  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -123,8 +123,8 @@
 //NeoPixel#5
 #define NeoPixel5_Active false  //NeoPixel#5 (true = activated / false = deactivated)
 #define NeoPixel5_StartupAnimationType 1  //Startup animation type (1-3)
-#define NeoPixel5_DisplayPrinterObject 3  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel5_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency)
+#define NeoPixel5_DisplayPrinterObject 3  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel5_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel5_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel5_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel5_ArduinoPin 0  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -137,8 +137,8 @@
 //NeoPixel#6
 #define NeoPixel6_Active false  //NeoPixel#6 (true = activated / false = deactivated)
 #define NeoPixel6_StartupAnimationType 1  //Startup animation type (1-3)
-#define NeoPixel6_DisplayPrinterObject 4  //Show Object: 0= Heatbed / 1-4= Heater #1-4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel6_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change display depending on status of heaters / true= Change every x seconds as set by DisplayPrinterObjectChangeFrequency
+#define NeoPixel6_DisplayPrinterObject 4  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel6_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel6_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel6_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel6_ArduinoPin 0  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
