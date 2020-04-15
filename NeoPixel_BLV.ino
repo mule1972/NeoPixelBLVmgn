@@ -10,7 +10,7 @@
 #define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
 #define DisplayPrinterObjectChangeFrequency 3  //Change frequency in seconds for displaying multiple PrinterObjects
 
-//Heater-Config
+//PrinterObject#0 - Heater0 (Heatbed)
 #define Heater0_Scale 10  //Display scale factor for Heater 0 (Heatbed)
 #define Heater0_ColorIdle 255,255,255  //RGB values for specified status
 #define Heater0_ColorHeatUp 255,64,64  //RGB values for specified status
@@ -18,6 +18,7 @@
 #define Heater0_ColorCoolDown 0,0,255  //RGB values for specified status
 #define Heater0_ColorAnimation 0,0,0  //RGB values for specified status
 
+//PrinterObject#1 - Heater1
 #define Heater1_Scale 20  //Display scale factor for Heater 1
 #define Heater1_ColorIdle 255,255,255  //RGB values for specified status
 #define Heater1_ColorHeatUp 255,64,64  //RGB values for specified status
@@ -25,6 +26,7 @@
 #define Heater1_ColorCoolDown 0,0,255  //RGB values for specified status
 #define Heater1_ColorAnimation 0,0,0  //RGB values for specified status
 
+//PrinterObject#2 - Heater2
 #define Heater2_Scale 20  //Display scale factor for Heater 2
 #define Heater2_ColorIdle 255,255,255  //RGB values for specified status
 #define Heater2_ColorHeatUp 255,64,64  //RGB values for specified status
@@ -32,6 +34,7 @@
 #define Heater2_ColorCoolDown 0,0,255  //RGB values for specified status
 #define Heater2_ColorAnimation 0,0,0  //RGB values for specified status
 
+//PrinterObject#3 - Heater3
 #define Heater3_Scale 20  //Display scale factor for Heater 3
 #define Heater3_ColorIdle 255,255,255  //RGB values for specified status
 #define Heater3_ColorHeatUp 255,64,64  //RGB values for specified status
@@ -39,6 +42,7 @@
 #define Heater3_ColorCoolDown 0,0,255  //RGB values for specified status
 #define Heater3_ColorAnimation 0,0,0  //RGB values for specified status
 
+//PrinterObject#4 - Heater4
 #define Heater4_Scale 20  //Display scale factor for Heater 4
 #define Heater4_ColorIdle 255,255,255  //RGB values for specified status
 #define Heater4_ColorHeatUp 255,64,64  //RGB values for specified status
@@ -46,7 +50,7 @@
 #define Heater4_ColorCoolDown 0,0,255  //RGB values for specified status
 #define Heater4_ColorAnimation 0,0,0  //RGB values for specified status
 
-//Colors for PrinterStatus
+//PrinterObject#5 - PrinterStatus
 #define PrinterStatus_ColorIdle 255,255,255  //RGB values for specified status
 #define PrinterStatus_ColorPrinting 64,255,64  //RGB values for specified status
 #define PrinterStatus_ColorPrintingDone 0,255,0  //RGB values for specified status
@@ -825,7 +829,7 @@ void loop()
             NeoPixelConfig[NeoPixelID].AnimationMemoryRunning = false;
             NeoPixelConfig[NeoPixelID].AnimationMemoryAnimationColor = 0;
           }
-          if (DisplayPrinterObject != 99) {
+          if (DisplayPrinterObject >= 0 && DisplayPrinterObject < NumberHeaters) {
             //Display HeaterStatus
             SetTempHeater = 0.0;
             ActTempHeater= Printer.Heater_ActTemp[DisplayPrinterObject];
@@ -858,7 +862,7 @@ void loop()
               }
             }
           }
-          else {
+          else if (DisplayPrinterObject == 99) {
             //Display PrinterStatus & PrintProgress
             if(Printer.Status == 'P') { 
               //Display PrintProgress
