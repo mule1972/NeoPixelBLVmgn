@@ -3,7 +3,7 @@
 //#define DEBUGLEVEL1_ACTIVE
 //#define DEBUGLEVEL2_ACTIVE
 
-// ************* V3.0 Beta 15  ***********
+// ************* V3.0 Beta 16  ***********
 // ********** User-Config Begin **********
 
 //General
@@ -212,7 +212,7 @@ int8_t TmpDisplayPrinterObject5[(NumberHeaters + 2)] = {NeoPixel5_DisplayPrinter
 int8_t TmpDisplayPrinterObject6[(NumberHeaters + 2)] = {NeoPixel6_DisplayPrinterObject , -1};
 
 int8_t DisplayPrinterObject;
-uint8_t HeaterPos;
+uint8_t PrinterObjectPos;
 uint8_t PrinterObject;
 float SetTempHeater;
 float ActTempHeater;
@@ -267,27 +267,50 @@ void AnalyzeSerialMessage() {
   char JsonObjhstat[] = "hstat";
   char JsonObjfractionprinted[] = "fraction_printed";
 
+  #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+    Serial.print(F("=> Message= ")); Serial.print(SerialMessage); Serial.println(F(""));
+  #endif 
+
   //Printer Status
   JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjstatus, 0);
   if (JsonResult == true) {Printer.Status = JsonResultValue[0]; Printer.UpdatePending = true;}
 
   for (HeaterID = 0; HeaterID < NumberHeaters; HeaterID++){
-  //Heater Actual-Temp
+    #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+      Serial.print(F("=> AnalyzeSerialMessage-Heater[")); Serial.print(HeaterID); Serial.print(F("]: "));
+    #endif 
+    //Heater Actual-Temp
     JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjheaters, (HeaterID + 1));
     if (JsonResult == true) {Printer.Heater_ActTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
+    #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+      Serial.print(F(" ActTemp= ")); Serial.print(JsonResultValue);
+    #endif 
 
-  //Heater Active-Temp
+    //Heater Active-Temp
     JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjactive, (HeaterID + 1));
     if (JsonResult == true) {Printer.Heater_ActiveTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
+    #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+      Serial.print(F(" / ActiveTemp= ")); Serial.print(JsonResultValue);
+    #endif 
 
-  //Heater Standby-Temp
+    //Heater Standby-Temp
     JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjstandby, (HeaterID + 1));
     if (JsonResult == true) {Printer.Heater_StandbyTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
+    #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+      Serial.print(F(" / StandbyTemp= ")); Serial.print(JsonResultValue);
+    #endif 
 
-  //HeaterStatus 0= Off / 1= Standby / 2= Active / 3= Fault / 4= Tuning
+    //HeaterStatus 0= Off / 1= Standby / 2= Active / 3= Fault / 4= Tuning
     JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjhstat, (HeaterID + 1));
     if (JsonResult == true) {Printer.Heater_Status[HeaterID] = atoi(JsonResultValue); Printer.UpdatePending = true;}
+    #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+      Serial.print(F(" / Status= ")); Serial.print(JsonResultValue); Serial.println(F(""));
+    #endif 
   }  
+  
+  #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
+    Serial.println(F("");
+  #endif 
   
   //Print Progress  
   JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjfractionprinted, 0);
@@ -295,7 +318,8 @@ void AnalyzeSerialMessage() {
 }
 
 
-// Example-Json-Message: {"status":"I","heaters":[31.5,28.1],"active":[0.0,0.0],"standby":[0.0,0.0],"hstat":[0,0],"pos":[0.000,0.000,0.000],"machine":[0.000,0.000,0.000],"sfactor":100.00,"efactor":[100.00],"babystep":0.000,"Heater":-1,"probe":"0","fanPercent":[0.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0],"fanRPM":0,"homed":[0,0,0],"msgBox.mode":-1,"geometry":"coreXY","axes":3,"totalAxes":3,"axisNames":"XYZ","volumes":2,"numHeaters":1,"myName":"BLV mgn Cube","firmwareName":"RepRapFirmware for Duet 2 WiFi/Ethernet"}
+//Example-Json-Message: {"status":"I","heaters":[31.5,28.1],"active":[0.0,0.0],"standby":[0.0,0.0],"hstat":[0,0],"pos":[0.000,0.000,0.000],"machine":[0.000,0.000,0.000],"sfactor":100.00,"efactor":[100.00],"babystep":0.000,"Heater":-1,"probe":"0","fanPercent":[0.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0],"fanRPM":0,"homed":[0,0,0],"msgBox.mode":-1,"geometry":"coreXY","axes":3,"totalAxes":3,"axisNames":"XYZ","volumes":2,"numHeaters":1,"myName":"BLV mgn Cube","firmwareName":"RepRapFirmware for Duet 2 WiFi/Ethernet"}
+//Message= {status:I,heaters:[22.4,21.9,2000.0],active:[0.0,0.0,0.0],standby:[0.0,0.0,0.0],hstat:[0,0,0],pos:[0.000,0.000,0.000],machine:[0.000,0.000,0.000],sfactor:100.00,efactor:[100.00],babystep:0.000,tool:1,probe:0,fanPercent:[0.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0],fanRPM:0,homed:[0,0,0],msgBox.mode:-1}
 bool JsonParseRoot(char* Result, char* JsonMessagePtr, char* JsonRootObjectPtr, int JsonObjectIndex) {
   char* PositionBeginPtr;
   char* PositionEndPtr;
@@ -305,13 +329,13 @@ bool JsonParseRoot(char* Result, char* JsonMessagePtr, char* JsonRootObjectPtr, 
   Result[0] = '\0';
 
   #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
-    Serial.print("JsonObject= ");
+    Serial.print(F("JsonObject= "));
     Serial.print(JsonRootObjectPtr);
-    Serial.print(" / JsonObjectIndex= ");
+    Serial.print(F(" / JsonObjectIndex= "));
     Serial.print(JsonObjectIndex);
-    Serial.print(" => JsonMessage= ");
+    Serial.print(F(" => JsonMessage= "));
     Serial.print(JsonMessagePtr);
-    Serial.println("");
+    Serial.println(F(""));
   #endif 
 
   PositionBeginPtr = strstr(JsonMessagePtr, JsonRootObjectPtr);
@@ -351,7 +375,7 @@ bool JsonParseRoot(char* Result, char* JsonMessagePtr, char* JsonRootObjectPtr, 
                 return false;
               }
               else {
-                PositionBeginPtr = strstr(JsonValue,",") + 1;
+                PositionBeginPtr = strstr(PositionBeginPtr,",") + 1;
               }
             }
             if (strstr(PositionBeginPtr, ",") != NULL) {
@@ -610,7 +634,7 @@ void setup()
     while(!Serial2)
     {;}
     #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL1_ACTIVE)
-      Serial.println("Start");
+      Serial.println(F("Start"));
     #endif
   #endif 
   //Arduino-Pro & Co.
@@ -778,23 +802,23 @@ void loop()
           if (NeoPixelConfig[NeoPixelID].DisplayPrinterObjectChangeByFrequency == false) {
             //Multiple PrinterObjects: Change PrinterObject by HeaterStatus
             //Check for Printerobject = 99 (PrinterStatus)
-            for (HeaterPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos] != -1; HeaterPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos];
+            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
+              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
               if (PrinterObject == 99) {DisplayPrinterObject = PrinterObject;}
             }
             //Determine first "active" heater
-            for (HeaterPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos] != -1; HeaterPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos];
+            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
+              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
               if (Printer.Heater_Status[PrinterObject] == 2) {DisplayPrinterObject = PrinterObject;}
             }
             //Determine first "standby" heater
-            for (HeaterPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos] != -1; HeaterPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos];
+            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
+              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
               if (Printer.Heater_Status[PrinterObject] == 1) {DisplayPrinterObject = PrinterObject;}
             }
             //Determine first "off" heater
-            for (HeaterPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos] != -1; HeaterPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[HeaterPos];
+            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
+              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
               if (Printer.Heater_Status[PrinterObject] == 0) {DisplayPrinterObject = PrinterObject;}
             }
           }
@@ -813,8 +837,8 @@ void loop()
         }  
 
         #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL2_ACTIVE)
-          Serial.print("NeoPixelID["); Serial.print(i); Serial.print("]= "); Serial.print(DisplayPrinterObject); Serial.print(" / SetTemp= "); Serial.print(SetTempHeater); Serial.print(" / ActTemp= "); Serial.print(ActTempHeater); Serial.println("");
-          Serial.print("0= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[0]); Serial.print(" / 1= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[1]); Serial.print(" / 2= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[2]); Serial.print(" / 3= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[3]); Serial.print(" / 4= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[4]); Serial.print(" / 5= "); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[5]); Serial.println(""); Serial.println("");
+          Serial.print(F("=> Determine PrinterObject / NeoPixelID[")); Serial.print(NeoPixelID); Serial.print(F("]= ")); Serial.print(DisplayPrinterObject); Serial.println(F(""));
+          Serial.print(F("0= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[0]); Serial.print(F(" / 1= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[1]); Serial.print(F(" / 2= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[2]); Serial.print(F(" / 3= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[3]); Serial.print(F(" / 4= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[4]); Serial.print(F(" / 5= ")); Serial.print(NeoPixelConfig[NeoPixelID].DisplayPrinterObject[5]); Serial.println(F(""));
         #endif 
 
         //Update Neopixel?
@@ -839,6 +863,10 @@ void loop()
             else if (Printer.Heater_Status[DisplayPrinterObject] == 1) {
               SetTempHeater = Printer.Heater_StandbyTemp[DisplayPrinterObject];
             }
+            #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)) && defined(DEBUGLEVEL2_ACTIVE)
+              Serial.print(F("=> Read Temperatures NeoPixelID[")); Serial.print(NeoPixelID); Serial.print(F("]= ")); Serial.print(DisplayPrinterObject); Serial.print(F(" / SetTemp= ")); Serial.print(SetTempHeater); Serial.print(F(" / ActTemp= ")); Serial.print(ActTempHeater); Serial.println(F(""));
+            #endif 
+
             for (NeoPixelLEDID = 1; NeoPixelLEDID <= NeoPixelConfig[NeoPixelID].LEDs; NeoPixelLEDID++)
             {
               if((((ActTempHeater - NeoPixelConfig[NeoPixelID].TempOffset) / HeaterConfig[DisplayPrinterObject].Scale) < NeoPixelLEDID) && (((SetTempHeater - NeoPixelConfig[NeoPixelID].TempOffset) / HeaterConfig[DisplayPrinterObject].Scale) >= NeoPixelLEDID)) {
