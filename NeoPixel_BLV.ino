@@ -3,11 +3,14 @@
 //#define DEBUGLEVEL1_ACTIVE
 //#define DEBUGLEVEL2_ACTIVE
 
-// ************* V3.0 Beta 16  ***********
+// ************* V3.0 Beta 17  ***********
 // ********** User-Config Begin **********
 
 //General
 #define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
+#define NeoPixelStartupAnimationColor1 255,0,0  //RGB values for Startup Animation Type1
+#define NeoPixelStartupAnimationColor2 0,255,0  //RGB values for Startup Animation Type2
+#define NeoPixelStartupAnimationColor3 0,0,255  //RGB values for Startup Animation Type3
 #define DisplayPrinterObjectChangeFrequency 3  //Change frequency in seconds for displaying multiple PrinterObjects
 
 //PrinterObject#0 - Heater0 (Heatbed)
@@ -66,7 +69,7 @@
 
 //NeoPixel#1
 #define NeoPixel1_Active true  //NeoPixel#1 (true = activated / false = deactivated)
-#define NeoPixel1_StartupAnimationType 3  //Startup animation type (1-3)
+#define NeoPixel1_StartupAnimationType 3  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel1_DisplayPrinterObject 99  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel1_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel1_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -80,7 +83,7 @@
 
 //NeoPixel#2
 #define NeoPixel2_Active true  //NeoPixel#2 (true = activated / false = deactivated)
-#define NeoPixel2_StartupAnimationType 1  //Startup animation type (1-3)
+#define NeoPixel2_StartupAnimationType 1  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel2_DisplayPrinterObject 0  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel2_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel2_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -94,7 +97,7 @@
 
 //NeoPixel#3
 #define NeoPixel3_Active true  //NeoPixel#3 (true = activated / false = deactivated)
-#define NeoPixel3_StartupAnimationType 2  //Startup animation type (1-3)
+#define NeoPixel3_StartupAnimationType 2  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel3_DisplayPrinterObject 1  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel3_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel3_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -108,7 +111,7 @@
 
 //NeoPixel#4
 #define NeoPixel4_Active false  //NeoPixel#4 (true = activated / false = deactivated)
-#define NeoPixel4_StartupAnimationType 1  //Startup animation type (1-3)
+#define NeoPixel4_StartupAnimationType 1  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel4_DisplayPrinterObject 2  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel4_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel4_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -122,7 +125,7 @@
 
 //NeoPixel#5
 #define NeoPixel5_Active false  //NeoPixel#5 (true = activated / false = deactivated)
-#define NeoPixel5_StartupAnimationType 1  //Startup animation type (1-3)
+#define NeoPixel5_StartupAnimationType 1  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel5_DisplayPrinterObject 3  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel5_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel5_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -136,7 +139,7 @@
 
 //NeoPixel#6
 #define NeoPixel6_Active false  //NeoPixel#6 (true = activated / false = deactivated)
-#define NeoPixel6_StartupAnimationType 1  //Startup animation type (1-3)
+#define NeoPixel6_StartupAnimationType 1  //Startup animation: Start with NeoPixelStartupAnimationColor 1,2 or 3
 #define NeoPixel6_DisplayPrinterObject 4  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
 #define NeoPixel6_DisplayPrinterObjectChangeByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= change PrinterObject depending on status of heaters / true= Change PrinterObject every x seconds as set by DisplayPrinterObjectChangeFrequency
 #define NeoPixel6_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
@@ -676,29 +679,29 @@ void setup()
     } 
     //Activate startup sequence & Co. if all activated NeoPixels have the same number of LEDs
   	if (NeoPixelCount > 0 && NeoPixelStartupAnimationActive_Consistency == true) {
-
       //Initialize Neopixels
       for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
         if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(255);}
       }
+      
       //Startup Animation #1a
       for (NeoPixelLEDID = 0; NeoPixelLEDID < NeoPixelCount; NeoPixelLEDID++) {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(255, 0, 0); break; case 2: AnimationColor = ConvertColor(0, 255, 0); break; case 3: AnimationColor = ConvertColor(0, 0, 255); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor1); break; case 2: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor2); break; case 3: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor3); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(30);
       }
       //Startup Animation #1b
       for (NeoPixelLEDID = 0; NeoPixelLEDID < NeoPixelCount; NeoPixelLEDID++) {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(0, 255, 0); break; case 2: AnimationColor = ConvertColor(0, 0, 255); break; case 3: AnimationColor = ConvertColor(255, 0, 0); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor2); break; case 2: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor3); break; case 3: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor1); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(30);
       }
       //Startup Animation #1c
       for (NeoPixelLEDID = 0; NeoPixelLEDID < NeoPixelCount; NeoPixelLEDID++) {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(0, 0, 255); break; case 2: AnimationColor = ConvertColor(255, 0, 0); break; case 3: AnimationColor = ConvertColor(0, 255, 0); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0)); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor3); break; case 2: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor1); break; case 3: AnimationColor = ConvertColor(NeoPixelStartupAnimationColor2); break;} NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1),NeoPixelConfig[NeoPixelID].AnimationReverse), AnimationColor); NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(30);
       }
@@ -707,7 +710,7 @@ void setup()
       for(BrightnessID = 0; BrightnessID < 255; BrightnessID++)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
@@ -715,7 +718,7 @@ void setup()
       for(BrightnessID = 255; BrightnessID >= 0; BrightnessID--)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
@@ -723,7 +726,7 @@ void setup()
       for(BrightnessID = 0; BrightnessID < 255; BrightnessID++)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
@@ -731,7 +734,7 @@ void setup()
       for(BrightnessID = 255; BrightnessID >= 0; BrightnessID--)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
@@ -739,7 +742,7 @@ void setup()
       for(BrightnessID = 0; BrightnessID < 255; BrightnessID++)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
@@ -747,7 +750,7 @@ void setup()
       for(BrightnessID = 255; BrightnessID >= 0; BrightnessID--)
       {
         for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 255)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(255, 0, 0)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 255, 0)); break;} NeoPixel_Device[NeoPixelID]->show();}
+          if (NeoPixelConfig[NeoPixelID].Active == true) {NeoPixel_Device[NeoPixelID]->setBrightness(BrightnessID); switch (NeoPixelConfig[NeoPixelID].StartupAnimationType) {case 1: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor3)); break; case 2: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor1)); break; case 3: NeoPixel_Device[NeoPixelID]->fill(ConvertColor(NeoPixelStartupAnimationColor2)); break;} NeoPixel_Device[NeoPixelID]->show();}
         }
         delay(1);
       }
