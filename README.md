@@ -35,4 +35,4 @@ true = the corresponding Neopixel cycles between the PrinterObjects in a fixed f
 false = the corresponding Neopixel displays only the heater with the "highest priority": Priority 1 = first active heater of the defined ones / Priority 2 = First standby heater of the defined ones / Priority 3 = First off heater of the defined ones
 Attention: false can only be used if you setup the corresponding Neopixel to display heaters only.
 
-If you have any question just ask in the facebook group of Ben Levi: https://www.facebook.com/groups/BenLevi/
+If you have any question just ask in the facebook group of Ben Levi: https://www.facebook.com/groups/BenLevi/ 
