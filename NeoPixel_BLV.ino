@@ -9,7 +9,7 @@
   #error Unsupported CPU-Architecture found!!
 #endif  
 
-// ************* V3.0 Beta 18  ***********
+// ************* V3.0 ***********
 // ********** User-Config Begin **********
 
 //Configure Serial Ports (Do not change if you do not know what you are doing!)
