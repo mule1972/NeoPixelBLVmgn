@@ -13,8 +13,8 @@
 // ********** User-Config Begin **********
 
 //Configure Serial Ports (Do not change if you do not know what you are doing!)
-//#SoftwareSerial SoftSerial(RX,TX);  //Uncomment this line if you whish to use a soft serial for communication with the duet mainboard. Set according Arduino pin numbers to use for Receive(RX) and Transmit(TX).
-//#SoftwareSerial SoftSerialDebug(RX,TX);  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
+//SoftwareSerial SoftSerial(RX,TX);  //Uncomment this line if you whish to use a soft serial for communication with the duet mainboard. Set according Arduino pin numbers to use for Receive(RX) and Transmit(TX).
+//SoftwareSerial SoftSerialDebug(RX,TX);  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
 //#define SerialPort Serial  //Per default the serial port for communication with the duet mainboard is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. Serial or Serial1 or SoftSerial etc.).
 //#define SerialPortDebug Serial  //Per default the serial port for debugging purposes is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. "Serial" or "Serial1" or SoftSerialDebug etc).
 
