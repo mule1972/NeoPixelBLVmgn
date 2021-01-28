@@ -13,7 +13,8 @@ class StructPanelDueMessage {
   float Heater_ActiveTemp[NumberHeaters];
   float Heater_StandbyTemp[NumberHeaters];
   bool UpdatePending;
-  inline float FractionPrinted() { return printDuration / (float) (printDuration + printRemaining); }
+  // prevent divby0
+  inline float FractionPrinted() { return printDuration / (float) max(1, printDuration + printRemaining); }
   bool complete = false;
   private:
   uint16_t printDuration = 0;
