@@ -1,5 +1,11 @@
+#include <ArduinoStreamParser.h>
+#include <JsonHandler.h>
+#include <JsonStreamingParser2.h>
+
 #include <Adafruit_NeoPixel.h>
 #include <SoftwareSerial.h>
+
+#include "StreamingHandler.h"
 
 //#define DEBUGLEVEL1_ACTIVE
 //#define DEBUGLEVEL2_ACTIVE
@@ -209,7 +215,6 @@
 
 #define SerialTimeout 150
 #define NeopixelRefreshSpeed 200
-#define SerialMessageBuffer 550
 #define NumberHeaters 5
 #define NumberNeoPixels 6
 
@@ -248,16 +253,6 @@ struct StructHeaterConfig {
 };
 StructHeaterConfig HeaterConfig[NumberHeaters];
 
-struct StructPanelDueMessage {
-  public:
-  char Status;
-  uint8_t Heater_Status[NumberHeaters];
-  float Heater_ActTemp[NumberHeaters];
-  float Heater_ActiveTemp[NumberHeaters];
-  float Heater_StandbyTemp[NumberHeaters];
-  float FractionPrinted;
-  bool UpdatePending;
-};
 StructPanelDueMessage Printer;
 
 int8_t TmpDisplayPrinterObject1[(NumberHeaters + 2)] = {NeoPixel1_DisplayPrinterObject , -1};
@@ -274,7 +269,6 @@ float SetTempHeater;
 float ActTempHeater;
 unsigned long NeoPixelTimerRefresh = millis();
 unsigned long NeoPixelTimerToggleDisplayPrinterObject = millis();
-char SerialMessage[SerialMessageBuffer]; 
 uint8_t NeoPixelID;
 uint8_t NeoPixelLEDID;
 bool ToggleDisplayPrinterObject;
@@ -313,196 +307,29 @@ static int ConvertPosition2PixelIndex(int PixelCount, int PixelOffset, int Posit
   }  
 }
 
-void AnalyzeSerialMessage() {
-  char JsonResultValue[100];
-  bool JsonResult;
-  char JsonObjstatus[] = "status";
-  char JsonObjheaters[] = "heaters";
-  char JsonObjactive[] = "active";
-  char JsonObjstandby[] = "standby";
-  char JsonObjhstat[] = "hstat";
-  char JsonObjfractionprinted[] = "fraction_printed";
-
-  #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-    SerialObjectDebug.print(F("=> Message= ")); SerialObjectDebug.print(SerialMessage); SerialObjectDebug.println(F(""));
-  #endif 
-
-  //Printer Status
-  JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjstatus, 0);
-  if (JsonResult == true) {Printer.Status = JsonResultValue[0]; Printer.UpdatePending = true;}
-
-  for (HeaterID = 0; HeaterID < NumberHeaters; HeaterID++){
-    #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-      SerialObjectDebug.print(F("=> AnalyzeSerialMessage-Heater[")); SerialObjectDebug.print(HeaterID); SerialObjectDebug.print(F("]: "));
-    #endif 
-    //Heater Actual-Temp
-    JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjheaters, (HeaterID + 1));
-    if (JsonResult == true) {Printer.Heater_ActTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
-    #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-      SerialObjectDebug.print(F(" ActTemp= ")); SerialObjectDebug.print(JsonResultValue);
-    #endif 
-
-    //Heater Active-Temp
-    JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjactive, (HeaterID + 1));
-    if (JsonResult == true) {Printer.Heater_ActiveTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
-    #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-      SerialObjectDebug.print(F(" / ActiveTemp= ")); SerialObjectDebug.print(JsonResultValue);
-    #endif 
-
-    //Heater Standby-Temp
-    JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjstandby, (HeaterID + 1));
-    if (JsonResult == true) {Printer.Heater_StandbyTemp[HeaterID] = atof(JsonResultValue); Printer.UpdatePending = true;}
-    #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-      SerialObjectDebug.print(F(" / StandbyTemp= ")); SerialObjectDebug.print(JsonResultValue);
-    #endif 
-
-    //HeaterStatus 0= Off / 1= Standby / 2= Active / 3= Fault / 4= Tuning
-    JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjhstat, (HeaterID + 1));
-    if (JsonResult == true) {Printer.Heater_Status[HeaterID] = atoi(JsonResultValue); Printer.UpdatePending = true;}
-    #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-      SerialObjectDebug.print(F(" / Status= ")); SerialObjectDebug.print(JsonResultValue); SerialObjectDebug.println(F(""));
-    #endif 
-  }  
-  
-  #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-    SerialObjectDebug.println(F(""));
-  #endif 
-  
-  //Print Progress  
-  JsonResult = JsonParseRoot(JsonResultValue, SerialMessage, JsonObjfractionprinted, 0);
-  if (JsonResult == true) {Printer.FractionPrinted = atof(JsonResultValue); Printer.UpdatePending = true;}
-}
-
-
-//Example-Json-Message: {"status":"I","heaters":[31.5,28.1],"active":[0.0,0.0],"standby":[0.0,0.0],"hstat":[0,0],"pos":[0.000,0.000,0.000],"machine":[0.000,0.000,0.000],"sfactor":100.00,"efactor":[100.00],"babystep":0.000,"Heater":-1,"probe":"0","fanPercent":[0.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0],"fanRPM":0,"homed":[0,0,0],"msgBox.mode":-1,"geometry":"coreXY","axes":3,"totalAxes":3,"axisNames":"XYZ","volumes":2,"numHeaters":1,"myName":"BLV mgn Cube","firmwareName":"RepRapFirmware for Duet 2 WiFi/Ethernet"}
-//Message= {status:I,heaters:[22.4,21.9,2000.0],active:[0.0,0.0,0.0],standby:[0.0,0.0,0.0],hstat:[0,0,0],pos:[0.000,0.000,0.000],machine:[0.000,0.000,0.000],sfactor:100.00,efactor:[100.00],babystep:0.000,tool:1,probe:0,fanPercent:[0.0,0.0,100.0,100.0,0.0,0.0,0.0,0.0,0.0,0.0],fanRPM:0,homed:[0,0,0],msgBox.mode:-1}
-bool JsonParseRoot(char* Result, char* JsonMessagePtr, char* JsonRootObjectPtr, int JsonObjectIndex) {
-  char* PositionBeginPtr;
-  char* PositionEndPtr;
-  uint8_t JsonValueIndex = 0;
-  char JsonValue[100] = "";
-  
-  Result[0] = '\0';
-
-  #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
-    SerialObjectDebug.print(F("JsonObject= "));
-    SerialObjectDebug.print(JsonRootObjectPtr);
-    SerialObjectDebug.print(F(" / JsonObjectIndex= "));
-    SerialObjectDebug.print(JsonObjectIndex);
-    SerialObjectDebug.print(F(" => JsonMessage= "));
-    SerialObjectDebug.print(JsonMessagePtr);
-    SerialObjectDebug.println(F(""));
-  #endif 
-
-  PositionBeginPtr = strstr(JsonMessagePtr, JsonRootObjectPtr);
-
-  if (PositionBeginPtr == NULL) {
-    return false;
-  }
-  else {  
-    PositionBeginPtr = PositionBeginPtr + strlen(JsonRootObjectPtr) + 1;
-    if (JsonMessagePtr[(PositionBeginPtr - JsonMessagePtr)] == '[') { 
-      PositionEndPtr = strstr(PositionBeginPtr, "]");
-      if (PositionEndPtr == NULL) {
-        return false;
-      }  
-      else {
-        strncat(JsonValue, (PositionBeginPtr + 1), (PositionEndPtr - (PositionBeginPtr + 1)));
-        if (JsonObjectIndex == 0){
-          if (strstr(JsonValue,",") == NULL) {
-            strcpy(Result,JsonValue);
-            return true;
-          }
-          else {
-            //SingleValue expected, but MultiValue found 
-            return false;
-          }
-        }
-        else {
-          if (strstr(JsonValue,",") == NULL) {
-            //MultiValue expected, but Singlevalue found
-            return false;
-          }
-          else {
-            PositionBeginPtr = JsonValue;
-            for (JsonValueIndex = 1; JsonValueIndex < JsonObjectIndex; JsonValueIndex++){
-              if (strstr(PositionBeginPtr,",") == NULL) {
-                //Fewer Values found than expected
-                return false;
-              }
-              else {
-                PositionBeginPtr = strstr(PositionBeginPtr,",") + 1;
-              }
-            }
-            if (strstr(PositionBeginPtr, ",") != NULL) {
-              strncat(Result, PositionBeginPtr, (strstr(PositionBeginPtr, ",") - PositionBeginPtr));
-              return true;
-            }
-            else {
-              strcpy(Result,PositionBeginPtr);
-              return true;
-            }
-          }
-        }
-      }
-    }    
-    else {
-      if (JsonObjectIndex != 0){
-        //Multivalue expected but not found
-        return false;
-      }
-      else{
-        if (strstr(PositionBeginPtr,",") != NULL) {
-          strncat(Result, PositionBeginPtr, (strstr(PositionBeginPtr, ",") - PositionBeginPtr));
-          return true;
-        }
-        else if (strstr(PositionBeginPtr,"}") != NULL) {
-          strncat(Result, PositionBeginPtr, (strstr(PositionBeginPtr, "}") - PositionBeginPtr));
-          return true;
-        }
-        else{
-          //No EndPoint ( , or } ) for SingleValue found
-          return false;          
-        }
-      }  
-    } 
-  }  
-}
-
-
 void GetSerialMessage() {
   unsigned long timer = millis();
-  int SerialMessagePosition = 0;
-  bool SerialMessageComplete = false;
   bool SerialMessageBegin = false;
   char inChar;
-  while(SerialMessageComplete == false && ((millis() - timer) <= SerialTimeout))
+  JsonStreamingParser parser;
+  StreamingHandler handler;
+  handler.setPrinter(&Printer);
+  parser.setHandler(&handler);
+  Printer.complete = false;
+  Printer.UpdatePending = false;
+
+  while(!Printer.complete && ((millis() - timer) <= SerialTimeout))
   {    
 
-    while(SerialMessageComplete == false  && ((millis() - timer) <= SerialTimeout) && SerialObject.available() > 0) 
+    while(!Printer.complete && ((millis() - timer) <= SerialTimeout) && SerialObject.available() > 0) 
     {
       inChar = SerialObject.read();
       
-      if(inChar=='{') {
+      if (inChar=='{')
         SerialMessageBegin = true;
-        SerialMessagePosition = 0;
-        SerialMessage[SerialMessagePosition] = inChar;
-        SerialMessagePosition++;
-      }
-      else if (SerialMessageBegin == true && SerialMessagePosition < (SerialMessageBuffer - 3)) {
-        if (inChar=='}') {
-          SerialMessage[SerialMessagePosition] = inChar;
-          SerialMessage[(SerialMessagePosition + 1)] = '\0';
-          SerialMessageComplete=true;
-          AnalyzeSerialMessage();
-        }
-        else {
-          if (inChar != '\"') {
-            SerialMessage[SerialMessagePosition] = inChar;
-            SerialMessagePosition++;
-          }  
-        }  
-      }
+
+      if (SerialMessageBegin)
+        parser.parse(inChar);
     }
   }  
 }
@@ -658,7 +485,6 @@ void setup()
     Printer.Heater_StandbyTemp[HeaterID] = 0.0;
   }  
   Printer.Status = ' ';
-  Printer.FractionPrinted = 0.0;
   Printer.UpdatePending = false;
 
   InitialSerialMessageSuccess = false;
@@ -904,7 +730,7 @@ void loop()
               //Display PrintProgress
               for (NeoPixelLEDID = 1; NeoPixelLEDID <= NeoPixelConfig[NeoPixelID].LEDs; NeoPixelLEDID++)
               {
-                if(NeoPixelLEDID < (Printer.FractionPrinted * NeoPixelConfig[NeoPixelID].LEDs)) {
+                if(NeoPixelLEDID < (Printer.FractionPrinted() * NeoPixelConfig[NeoPixelID].LEDs)) {
                   NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelLEDID,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorPrintingDone));
                 }
                 else {
