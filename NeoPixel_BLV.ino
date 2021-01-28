@@ -1,6 +1,4 @@
-#include <ArduinoStreamParser.h>
-#include <JsonHandler.h>
-#include <JsonStreamingParser2.h>
+#include <JsonStreamingParser.h>
 
 #include <Adafruit_NeoPixel.h>
 #include <SoftwareSerial.h>
@@ -9,6 +7,11 @@
 
 //#define DEBUGLEVEL1_ACTIVE
 //#define DEBUGLEVEL2_ACTIVE
+#ifdef DEBUGLEVEL1_ACTIVE
+#define DEBUG1(x) SerialObjectDebug.println(x);
+#else
+#define DEBUG1(x)
+#endif
 
 #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega32U4__) || defined(__SAM3X8E__))
 #else
@@ -20,9 +23,10 @@
 
 //Configure Serial Ports (Do not change if you do not know what you are doing!)
 //SoftwareSerial SoftSerial(RX,TX);  //Uncomment this line if you whish to use a soft serial for communication with the duet mainboard. Set according Arduino pin numbers to use for Receive(RX) and Transmit(TX).
-//SoftwareSerial SoftSerialDebug(RX,TX);  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
-//#define SerialPort Serial  //Per default the serial port for communication with the duet mainboard is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. Serial or Serial1 or SoftSerial etc.).
-//#define SerialPortDebug Serial  //Per default the serial port for debugging purposes is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. "Serial" or "Serial1" or SoftSerialDebug etc).
+
+SoftwareSerial SoftSerialDebug(12,11);  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
+//#define SerialPort SoftSerial  //Per default the serial port for communication with the duet mainboard is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. Serial or Serial1 or SoftSerial etc.).
+#define SerialPortDebug SoftSerialDebug  //Per default the serial port for debugging purposes is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. "Serial" or "Serial1" or SoftSerialDebug etc).
 
 //General
 #define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
@@ -212,8 +216,7 @@
   #endif 
 #endif  
 
-
-#define SerialTimeout 150
+#define SerialTimeout 500
 #define NeopixelRefreshSpeed 200
 #define NumberHeaters 5
 #define NumberNeoPixels 6
@@ -314,9 +317,8 @@ void GetSerialMessage() {
   JsonStreamingParser parser;
   StreamingHandler handler;
   handler.setPrinter(&Printer);
-  parser.setHandler(&handler);
-  Printer.complete = false;
-  Printer.UpdatePending = false;
+  parser.setListener(&handler);
+  Printer.reset();
 
   while(!Printer.complete && ((millis() - timer) <= SerialTimeout))
   {    
@@ -332,12 +334,21 @@ void GetSerialMessage() {
         parser.parse(inChar);
     }
   }  
+  if (Printer.complete) DEBUG1(Printer.toString())
 }
 
 
 // Initialize everything and prepare to start
 void setup()
 {   
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(500);
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
   // Initialize Variables
   int16_t BrightnessID = 0;
   uint8_t NeoPixelAnimationStep;
@@ -491,13 +502,11 @@ void setup()
 
   //Setup Serial Interface(s)
   SerialObject.begin(57600);
-  while(!SerialObject)
-  {;}
 
-  #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE)) && SerialObject != SerialObjectDebug
-    SerialObjectDebug.begin(57600);
-    while(SerialObjectDebug)
-    {;}
+  #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
+    // my cpp isn't letting me compare SerialObject and SerialObjectDebug directly?
+    if ((void*) &SerialObject != (void*) &SerialObjectDebug)
+        SerialObjectDebug.begin(57600);
   #endif 
   
   // Startup-Animation
@@ -602,6 +611,9 @@ void setup()
 // Main loop
 void loop()
 {
+  digitalWrite(LED_BUILTIN, HIGH);
+  delay(500);
+  digitalWrite(LED_BUILTIN, LOW);
   //Read serial
   GetSerialMessage();
 

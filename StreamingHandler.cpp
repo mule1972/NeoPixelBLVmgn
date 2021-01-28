@@ -1,69 +1,74 @@
-#include <JsonHandler.h>
+#include <JsonListener.h>
 #include "StreamingHandler.h"
 
-#define IS_HEATER (strcmp(path.get(-2)->getKey(), "heaters") == 0)
-#define STR(x, y) (strcmp(x, y) == 0)
+#define parent stack[0]
+#define IS_HEATER (parent == "heaters")
+#define EQ(x, y) (x == y)
 
-void StreamingHandler::value(ElementPath path, ElementValue value) {
-  const char* key = path.getKey();
+void StreamingHandler::handleValue(String value) {
 
-  if (key[0] != '\0') {
-    if (STR(key, "status") && STR(path.getParent()->getKey(), "state")) {
-        char *status = value.getString();
-        if (STR(status, "idle")) {
+    if (EQ(current, "duration") || EQ(current, "active") || EQ(current, "file") || EQ(current, "status") || EQ(current, "standby") || EQ(current, "state") || EQ(current, "current")) {
+      SoftSerialDebug.println(stack[2] + " -> " + stack[1] + " -> " + stack[0] + " -> " + current + " = " + value);
+    }
+
+    if (EQ(current, "status") && EQ(parent, "state")) {
+        if (EQ(value, "idle")) {
             Printer->Status = 'I';
-        } else if (STR(status, "simulating")) {
+        } else if (EQ(value, "simulating")) {
             Printer->Status = 'P';
-        } else if (STR(status, "processing")) {
+        } else if (EQ(value, "processing")) {
             Printer->Status = 'P';
-        } else if (STR(status, "resuming")) {
+        } else if (EQ(value, "resuming")) {
             Printer->Status = 'B';
-        } else if (STR(status, "busy")) {
+        } else if (EQ(value, "busy")) {
             Printer->Status = 'D';
-        } else if (STR(status, "starting")) {
+        } else if (EQ(value, "starting")) {
             Printer->Status = 'F';
-        } else if (STR(status, "updating")) {
+        } else if (EQ(value, "updating")) {
             Printer->Status = 'C';
-        } else if (STR(status, "pausing")) {
+        } else if (EQ(value, "pausing")) {
             Printer->Status = 'R';
-        } else if (STR(status, "paused")) {
+        } else if (EQ(value, "paused")) {
             Printer->Status = 'A';
-        } else if (STR(status, "halted")) {
+        } else if (EQ(value, "halted")) {
             Printer->Status = 'S';
-        } else if (STR(status, "off")) {
+        } else if (EQ(value, "off")) {
             Printer->Status = 'S';
         }
+        SoftSerialDebug.println(String("Got Status: ") + Printer->Status);
         Printer->UpdatePending = true;
-    } else if (STR(key, "active") && IS_HEATER) {
-        Printer->Heater_ActiveTemp[path.getIndex()] = value.getFloat();
+    } else if (EQ(current, "active") && IS_HEATER) {
+        Printer->Heater_ActiveTemp[index] = value.toFloat();
+        SoftSerialDebug.println(String("Got Active Temp: ") + index + " " + value.toFloat());
         Printer->UpdatePending = true;
-    } else if (STR(key, "standby") && IS_HEATER) {
-        Printer->Heater_StandbyTemp[path.getIndex()] = value.getFloat();
+    } else if (EQ(current, "standby") && IS_HEATER) {
+        Printer->Heater_StandbyTemp[index] = value.toFloat();
         Printer->UpdatePending = true;
-    } else if (STR(key, "current") && IS_HEATER) {
-        Printer->Heater_ActTemp[path.getIndex()] = value.getFloat();
+    } else if (EQ(current, "current") && IS_HEATER) {
+        Printer->Heater_ActTemp[index] = value.toFloat();
+        SoftSerialDebug.println(String("Got Current Temp: ") + index + " " + value.toFloat());
         Printer->UpdatePending = true;
-    } else if (STR(key, "state") && IS_HEATER) {
-        char *status = value.getString();
-        if (STR(status, "off") || STR(status, "offline")) {
-            Printer->Heater_Status[path.getIndex()] = 0;
-        } else if (STR(status, "active")) {
-            Printer->Heater_Status[path.getIndex()] = 2;
-        } else if (STR(status, "standby")) {
-            Printer->Heater_Status[path.getIndex()] = 0;
-        } else if (STR(status, "fault")) {
-            Printer->Heater_Status[path.getIndex()] = 3;
-        } else if (STR(status, "tuning")) {
-            Printer->Heater_Status[path.getIndex()] = 4;
+    } else if (EQ(current, "state") && IS_HEATER) {
+        if (EQ(value, "off") || EQ(value, "offline")) {
+            Printer->Heater_Status[index] = 0;
+        } else if (EQ(value, "active")) {
+            Printer->Heater_Status[index] = 2;
+        } else if (EQ(value, "standby")) {
+            Printer->Heater_Status[index] = 0;
+        } else if (EQ(value, "fault")) {
+            Printer->Heater_Status[index] = 3;
+        } else if (EQ(value, "tuning")) {
+            Printer->Heater_Status[index] = 4;
         }
 
         Printer->UpdatePending = true;
-    } else if (STR(key, "duration") && STR(path.getParent()->getKey(), "job")) {
-        Printer->printDuration = value.getInt();
+    } else if (EQ(current, "duration") && EQ(parent, "job")) {
+        Printer->printDuration = value.toInt();
+        SoftSerialDebug.println("Duration: " + value);
         Printer->UpdatePending = true;
-    } else if (STR(key, "file") && STR(path.getParent()->getKey(), "timesLeft")) {
-        Printer->printRemaining = value.getInt();
+    } else if (EQ(current, "file") && EQ(parent, "timesLeft")) {
+        SoftSerialDebug.println("Time Left: " + value);
+        Printer->printRemaining = value.toInt();
         Printer->UpdatePending = true;
     }
-  } 
 }
