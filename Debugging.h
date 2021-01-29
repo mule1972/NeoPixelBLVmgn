@@ -16,19 +16,19 @@ extern AltSoftSerial SoftSerialDebug;
   //Arduino-Mega & Co.
   #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__))
     #define SerialObjectDebug Serial
-  #endif 
+  #endif
   //Arduino-Pro & Co.
   #if (defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__))
     #define SerialObjectDebug Serial
-  #endif 
+  #endif
   //Arduino-Leonardo & Co.
   #if (defined(__AVR_ATmega32U4__))
     #define SerialObjectDebug Serial1
-  #endif 
+  #endif
   //Arduino-Due & Co.
   #if (defined(__SAM3X8E__))
     #define SerialObjectDebug Serial1
-  #endif 
+  #endif
 #endif  
 
 #ifdef DEBUGLEVEL1_ACTIVE

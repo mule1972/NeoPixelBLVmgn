@@ -197,7 +197,7 @@ AltSoftSerial SoftSerialDebug;  //Uncomment this line if you wish to use a soft 
   #endif 
 #endif
 
-#define SerialTimeout 150
+#define SerialTimeout 1500 // need enough time to finish receiving and processing all the data
 #define NeopixelRefreshSpeed 200
 #define NumberHeaters 5
 #define NumberNeoPixels 6
@@ -318,20 +318,17 @@ void GetSerialMessage() {
         parser.parse(inChar);
     }
   }  
-  if ((millis() - timer) > SerialTimeout) {
-    DEBUG1("\nmsg timeout")
+  if ((millis() - timer) > SerialTimeout && !Printer.complete) {
     if (bytesRead > 0) {
-      // blink 5 times to indicate the message failed to parse correctly
-      for (int i = 0; i < 5; i++) {
-          digitalWrite(LED_BUILTIN, HIGH);
-          delay(250);
-          digitalWrite(LED_BUILTIN, LOW);
-          delay(250);
-      }
+      DEBUG1F(F("\nmsg timeout ")) DEBUG1(bytesRead)
+      // turn LED on to indicate message failed to parse
+      digitalWrite(LED_BUILTIN, HIGH);
     }
-  }
-  if (Printer.complete) {
-    DEBUG1F(F("\nStatus: ")) DEBUG1(String(Printer.FractionPrinted(), 3))
+  } else if (Printer.complete && bytesRead > 1) {
+    digitalWrite(LED_BUILTIN, LOW);
+    if (Printer.UpdatePending) {
+      DEBUG1F(F("\n")) DEBUG1F(bytesRead) DEBUG1F(F(" bytes read, job %: ")) DEBUG1(String(Printer.FractionPrinted(), 3))
+    }
   }
 }
 
@@ -604,9 +601,6 @@ void setup()
 // Main loop
 void loop()
 {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
   //Read serial
   GetSerialMessage();
 
