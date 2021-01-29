@@ -1,17 +1,10 @@
 #include <JsonStreamingParser.h>
 
 #include <Adafruit_NeoPixel.h>
-#include <SoftwareSerial.h>
+#include <AltSoftSerial.h>
 
 #include "StreamingHandler.h"
-
-//#define DEBUGLEVEL1_ACTIVE
-//#define DEBUGLEVEL2_ACTIVE
-#ifdef DEBUGLEVEL1_ACTIVE
-#define DEBUG1(x) SerialObjectDebug.println(x);
-#else
-#define DEBUG1(x)
-#endif
+#include "Debugging.h"
 
 #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega32U4__) || defined(__SAM3X8E__))
 #else
@@ -24,9 +17,13 @@
 //Configure Serial Ports (Do not change if you do not know what you are doing!)
 //SoftwareSerial SoftSerial(RX,TX);  //Uncomment this line if you whish to use a soft serial for communication with the duet mainboard. Set according Arduino pin numbers to use for Receive(RX) and Transmit(TX).
 
-SoftwareSerial SoftSerialDebug(12,11);  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
+// if you use soft serial, you *MUST* decrease speed to 38400 for both ports, 
+// the arduino will lack sufficient processing power to handle data any faster
+#if defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE)
+// On most arduino, alt soft serial runs rx=9 tx=8
+AltSoftSerial SoftSerialDebug;  //Uncomment this line if you wish to use a soft serial for debug purposes.
+#endif
 //#define SerialPort SoftSerial  //Per default the serial port for communication with the duet mainboard is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. Serial or Serial1 or SoftSerial etc.).
-#define SerialPortDebug SoftSerialDebug  //Per default the serial port for debugging purposes is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. "Serial" or "Serial1" or SoftSerialDebug etc).
 
 //General
 #define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
@@ -121,7 +118,12 @@ SoftwareSerial SoftSerialDebug(12,11);  //Uncomment this line if you whish to us
 #define NeoPixel3_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
 #define NeoPixel3_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel3_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
+// moved to PIN 11 from 8 because of AltSoftSerial
+#if defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE)
+#define NeoPixel3_ArduinoPin 11  //Arduino pin used to control the Neopixel (moved when using soft serial)
+#else
 #define NeoPixel3_ArduinoPin 8  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
+#endif
 #define NeoPixel3_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
 #define NeoPixel3_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
 #define NeoPixel3_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
@@ -194,29 +196,8 @@ SoftwareSerial SoftSerialDebug(12,11);  //Uncomment this line if you whish to us
     #define SerialObject Serial3
   #endif 
 #endif
-//Setup Serial Interface (Debug)
-#if (defined SerialPortDebug)
-  #define SerialObjectDebug SerialPortDebug
-#else
-  //Arduino-Mega & Co.
-  #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__))
-    #define SerialObjectDebug Serial
-  #endif 
-  //Arduino-Pro & Co.
-  #if (defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__))
-    #define SerialObjectDebug Serial
-  #endif 
-  //Arduino-Leonardo & Co.
-  #if (defined(__AVR_ATmega32U4__))
-    #define SerialObjectDebug Serial1
-  #endif 
-  //Arduino-Due & Co.
-  #if (defined(__SAM3X8E__))
-    #define SerialObjectDebug Serial1
-  #endif 
-#endif  
 
-#define SerialTimeout 500
+#define SerialTimeout 150
 #define NeopixelRefreshSpeed 200
 #define NumberHeaters 5
 #define NumberNeoPixels 6
@@ -319,6 +300,7 @@ void GetSerialMessage() {
   handler.setPrinter(&Printer);
   parser.setListener(&handler);
   Printer.reset();
+  uint16_t bytesRead = 0;
 
   while(!Printer.complete && ((millis() - timer) <= SerialTimeout))
   {    
@@ -326,6 +308,8 @@ void GetSerialMessage() {
     while(!Printer.complete && ((millis() - timer) <= SerialTimeout) && SerialObject.available() > 0) 
     {
       inChar = SerialObject.read();
+      if (inChar == '\n') Printer.complete = true;
+      bytesRead += 1;
       
       if (inChar=='{')
         SerialMessageBegin = true;
@@ -334,7 +318,21 @@ void GetSerialMessage() {
         parser.parse(inChar);
     }
   }  
-  if (Printer.complete) DEBUG1(Printer.toString())
+  if ((millis() - timer) > SerialTimeout) {
+    DEBUG1("\nmsg timeout")
+    if (bytesRead > 0) {
+      // blink 5 times to indicate the message failed to parse correctly
+      for (int i = 0; i < 5; i++) {
+          digitalWrite(LED_BUILTIN, HIGH);
+          delay(250);
+          digitalWrite(LED_BUILTIN, LOW);
+          delay(250);
+      }
+    }
+  }
+  if (Printer.complete) {
+    DEBUG1F(F("\nStatus: ")) DEBUG1(String(Printer.FractionPrinted(), 3))
+  }
 }
 
 
@@ -342,13 +340,6 @@ void GetSerialMessage() {
 void setup()
 {   
   pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(500);
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(500);
-  digitalWrite(LED_BUILTIN, LOW);
   // Initialize Variables
   int16_t BrightnessID = 0;
   uint8_t NeoPixelAnimationStep;
@@ -502,11 +493,13 @@ void setup()
 
   //Setup Serial Interface(s)
   SerialObject.begin(57600);
+  while (!SerialObject);
 
   #if (defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE))
     // my cpp isn't letting me compare SerialObject and SerialObjectDebug directly?
-    if ((void*) &SerialObject != (void*) &SerialObjectDebug)
-        SerialObjectDebug.begin(57600);
+    if ((void*) &SerialObject != (void*) &SerialObjectDebug) {
+        SerialObjectDebug.begin(38400);
+    }
   #endif 
   
   // Startup-Animation

@@ -1,18 +1,18 @@
 #include <JsonListener.h>
+#include "Debugging.h"
 #include "StreamingHandler.h"
 
 #define parent stack[0]
 #define IS_HEATER (parent == "heaters")
-#define EQ(x, y) (x == y)
+#define EQ(x, y) (strcmp_P(x.c_str(), PSTR(y)) == 0)
 
+#define D(x) DEBUG1F(x)
+#define DLN(x) DEBUG1(x)
 void StreamingHandler::handleValue(String value) {
-
-    if (EQ(current, "duration") || EQ(current, "active") || EQ(current, "file") || EQ(current, "status") || EQ(current, "standby") || EQ(current, "state") || EQ(current, "current")) {
-      SoftSerialDebug.println(stack[2] + " -> " + stack[1] + " -> " + stack[0] + " -> " + current + " = " + value);
-    }
 
     if (EQ(current, "status") && EQ(parent, "state")) {
         if (EQ(value, "idle")) {
+            Printer->resetPrinting();
             Printer->Status = 'I';
         } else if (EQ(value, "simulating")) {
             Printer->Status = 'P';
@@ -23,30 +23,35 @@ void StreamingHandler::handleValue(String value) {
         } else if (EQ(value, "busy")) {
             Printer->Status = 'D';
         } else if (EQ(value, "starting")) {
+            Printer->resetPrinting();
             Printer->Status = 'F';
         } else if (EQ(value, "updating")) {
+            Printer->resetPrinting();
             Printer->Status = 'C';
         } else if (EQ(value, "pausing")) {
             Printer->Status = 'R';
         } else if (EQ(value, "paused")) {
             Printer->Status = 'A';
         } else if (EQ(value, "halted")) {
+            Printer->resetPrinting();
             Printer->Status = 'S';
         } else if (EQ(value, "off")) {
+            Printer->resetPrinting();
             Printer->Status = 'S';
         }
-        SoftSerialDebug.println(String("Got Status: ") + Printer->Status);
+        D(F("Status: ")) DLN(Printer->Status);
         Printer->UpdatePending = true;
     } else if (EQ(current, "active") && IS_HEATER) {
         Printer->Heater_ActiveTemp[index] = value.toFloat();
-        SoftSerialDebug.println(String("Got Active Temp: ") + index + " " + value.toFloat());
+        D(F("Active Temp: ")) D(index) D(" ") DLN(value)
         Printer->UpdatePending = true;
     } else if (EQ(current, "standby") && IS_HEATER) {
+        D(F("Standby Temp: ")) D(index) D(" ") DLN(value)
         Printer->Heater_StandbyTemp[index] = value.toFloat();
         Printer->UpdatePending = true;
     } else if (EQ(current, "current") && IS_HEATER) {
+        D(F("Current Temp: ")) D(index) D(" ") DLN(value)
         Printer->Heater_ActTemp[index] = value.toFloat();
-        SoftSerialDebug.println(String("Got Current Temp: ") + index + " " + value.toFloat());
         Printer->UpdatePending = true;
     } else if (EQ(current, "state") && IS_HEATER) {
         if (EQ(value, "off") || EQ(value, "offline")) {
@@ -61,13 +66,14 @@ void StreamingHandler::handleValue(String value) {
             Printer->Heater_Status[index] = 4;
         }
 
+        D(F("Heater State: ")) D(index) D(" ") DLN(value)
         Printer->UpdatePending = true;
     } else if (EQ(current, "duration") && EQ(parent, "job")) {
         Printer->printDuration = value.toInt();
-        SoftSerialDebug.println("Duration: " + value);
+        D(F("Duration: ")) DLN(value);
         Printer->UpdatePending = true;
     } else if (EQ(current, "file") && EQ(parent, "timesLeft")) {
-        SoftSerialDebug.println("Time Left: " + value);
+        D(F("Time Left: ")) DLN(value);
         Printer->printRemaining = value.toInt();
         Printer->UpdatePending = true;
     }

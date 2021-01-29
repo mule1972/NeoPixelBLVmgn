@@ -1,10 +1,8 @@
 #pragma once
 
 #include <JsonListener.h>
-#include <SoftwareSerial.h>
 
 #define NumberHeaters 5
-extern SoftwareSerial SoftSerialDebug;  //Uncomment this line if you whish to use a soft serial for debug purposes. Set according Arduino pin numbers for Receive(RX) and Transmit(TX).
 
 class StructPanelDueMessage {
   friend class StreamingHandler;
@@ -17,12 +15,10 @@ class StructPanelDueMessage {
   bool UpdatePending;
   // prevent divby0
   inline float FractionPrinted() { return printDuration / (float) max(1, printDuration + printRemaining); }
-  inline void reset() { printDuration = 0; printRemaining = 0; UpdatePending = false; complete = false; }
+  inline void reset() { UpdatePending = false; complete = false; }
   bool complete = false;
-  inline String toString() {
-      return String("Status: ") + String(Status);
-  }
   private:
+  inline void resetPrinting() { printDuration = 0; printRemaining = 0; }
   uint16_t printDuration = 0;
   uint16_t printRemaining = 0;
 };
