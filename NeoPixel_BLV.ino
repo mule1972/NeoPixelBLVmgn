@@ -3,8 +3,10 @@
 #include <Adafruit_NeoPixel.h>
 #include <AltSoftSerial.h>
 
-#include "StreamingHandler.h"
+#include "Structures.h"
 #include "Debugging.h"
+#include "Config.h"
+#include "StreamingHandler.h"
 
 #if (defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega168__) || defined(__AVR_ATmega32U4__) || defined(__SAM3X8E__))
 #else
@@ -25,155 +27,10 @@ AltSoftSerial SoftSerialDebug;  //Uncomment this line if you wish to use a soft 
 #endif
 //#define SerialPort SoftSerial  //Per default the serial port for communication with the duet mainboard is being auto configured depending on the chipset being used. If you whish to customize it by your own, you have to uncomment this line and define the serial port to be used (e.g. Serial or Serial1 or SoftSerial etc.).
 
-//General
-#define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
-#define DisplayPrinterObjectCylceFrequency 3  //Cycle frequency in seconds for displaying multiple PrinterObjects
-
-//PrinterObject#0 - Heater0 (Heatbed)
-#define Heater0_Scale 10  //Display scale factor for Heater 0 (Heatbed)
-#define Heater0_ColorIdle 255,255,255  //RGB values for specified status
-#define Heater0_ColorHeatUp 255,64,64  //RGB values for specified status
-#define Heater0_ColorHeatUpDone 255,0,0  //RGB values for specified status
-#define Heater0_ColorCoolDown 0,0,255  //RGB values for specified status
-#define Heater0_ColorAnimation 0,0,0  //RGB values for specified status
-
-//PrinterObject#1 - Heater1
-#define Heater1_Scale 20  //Display scale factor for Heater 1
-#define Heater1_ColorIdle 255,255,255  //RGB values for specified status
-#define Heater1_ColorHeatUp 255,64,64  //RGB values for specified status
-#define Heater1_ColorHeatUpDone 255,0,0  //RGB values for specified status
-#define Heater1_ColorCoolDown 0,0,255  //RGB values for specified status
-#define Heater1_ColorAnimation 0,0,0  //RGB values for specified status
-
-//PrinterObject#2 - Heater2
-#define Heater2_Scale 20  //Display scale factor for Heater 2
-#define Heater2_ColorIdle 255,255,255  //RGB values for specified status
-#define Heater2_ColorHeatUp 255,64,64  //RGB values for specified status
-#define Heater2_ColorHeatUpDone 255,0,0  //RGB values for specified status
-#define Heater2_ColorCoolDown 0,0,255  //RGB values for specified status
-#define Heater2_ColorAnimation 0,0,0  //RGB values for specified status
-
-//PrinterObject#3 - Heater3
-#define Heater3_Scale 20  //Display scale factor for Heater 3
-#define Heater3_ColorIdle 255,255,255  //RGB values for specified status
-#define Heater3_ColorHeatUp 255,64,64  //RGB values for specified status
-#define Heater3_ColorHeatUpDone 255,0,0  //RGB values for specified status
-#define Heater3_ColorCoolDown 0,0,255  //RGB values for specified status
-#define Heater3_ColorAnimation 0,0,0  //RGB values for specified status
-
-//PrinterObject#4 - Heater4
-#define Heater4_Scale 20  //Display scale factor for Heater 4
-#define Heater4_ColorIdle 255,255,255  //RGB values for specified status
-#define Heater4_ColorHeatUp 255,64,64  //RGB values for specified status
-#define Heater4_ColorHeatUpDone 255,0,0  //RGB values for specified status
-#define Heater4_ColorCoolDown 0,0,255  //RGB values for specified status
-#define Heater4_ColorAnimation 0,0,0  //RGB values for specified status
-
-//PrinterObject#5 - PrinterStatus
-#define PrinterStatus_ColorIdle 255,255,255  //RGB values for specified status
-#define PrinterStatus_ColorPrinting 64,255,64  //RGB values for specified status
-#define PrinterStatus_ColorPrintingDone 0,255,0  //RGB values for specified status
-#define PrinterStatus_ColorStopped 0,0,255  //RGB values for specified status
-#define PrinterStatus_ColorConfiguring 255,255,0  //RGB values for specified status
-#define PrinterStatus_ColorPaused 160,32,240  //RGB values for specified status
-#define PrinterStatus_ColorBusy 255,255,0  //RGB values for specified status
-#define PrinterStatus_ColorPausing 160,32,240  //RGB values for specified status
-#define PrinterStatus_ColorResuming 255,255,0  //RGB values for specified status
-#define PrinterStatus_ColorFlashing 255,255,0  //RGB values for specified status
-#define PrinterStatus_ColorDefault 255,255,255  //RGB values for specified status
-#define PrinterStatus_ColorAnimation 0,0,0  //RGB values for specified status
-
-//NeoPixel#1
-#define NeoPixel1_Active true  //NeoPixel#1 (true = activated / false = deactivated)
-#define NeoPixel1_StartupAnimationColor 0,0,255  //RGB values for StartupAnimation
-#define NeoPixel1_DisplayPrinterObject 1,99  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel1_DisplayPrinterObjectCycleByFrequency true  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel1_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel1_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-#define NeoPixel1_ArduinoPin 7  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#define NeoPixel1_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel1_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel1_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel1_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel1_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
-//NeoPixel#2
-#define NeoPixel2_Active true  //NeoPixel#2 (true = activated / false = deactivated)
-#define NeoPixel2_StartupAnimationColor 255,0,0  //RGB values for StartupAnimation
-#define NeoPixel2_DisplayPrinterObject 0  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel2_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel2_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel2_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-#define NeoPixel2_ArduinoPin 6  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#define NeoPixel2_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel2_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel2_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel2_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel2_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
-//NeoPixel#3
-#define NeoPixel3_Active true  //NeoPixel#3 (true = activated / false = deactivated)
-#define NeoPixel3_StartupAnimationColor 0,255,0  //RGB values for StartupAnimation
-#define NeoPixel3_DisplayPrinterObject 1  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel3_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel3_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel3_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-// moved to PIN 11 from 8 because of AltSoftSerial
-#if defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE)
-#define NeoPixel3_ArduinoPin 11  //Arduino pin used to control the Neopixel (moved when using soft serial)
-#else
-#define NeoPixel3_ArduinoPin 8  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#endif
-#define NeoPixel3_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel3_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel3_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel3_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel3_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
-//NeoPixel#4
-#define NeoPixel4_Active true  //NeoPixel#4 (true = activated / false = deactivated)
-#define NeoPixel4_StartupAnimationColor 255,255,0  //RGB values for StartupAnimation
-#define NeoPixel4_DisplayPrinterObject 99,1  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel4_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel4_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel4_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-#define NeoPixel4_ArduinoPin 5  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#define NeoPixel4_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel4_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel4_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel4_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel4_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
-//NeoPixel#5
-#define NeoPixel5_Active false  //NeoPixel#5 (true = activated / false = deactivated)
-#define NeoPixel5_StartupAnimationColor 0,255,255  //RGB values for StartupAnimation
-#define NeoPixel5_DisplayPrinterObject 3  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel5_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel5_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel5_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-#define NeoPixel5_ArduinoPin 4  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#define NeoPixel5_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel5_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel5_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel5_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel5_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
-//NeoPixel#6
-#define NeoPixel6_Active false  //NeoPixel#6 (true = activated / false = deactivated)
-#define NeoPixel6_StartupAnimationColor 255,0,255  //RGB values for StartupAnimation
-#define NeoPixel6_DisplayPrinterObject 4  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel6_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
-#define NeoPixel6_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
-#define NeoPixel6_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
-#define NeoPixel6_ArduinoPin 3  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
-#define NeoPixel6_PixelOffset 0  //Usually LED number one of the NeoPixel is being used as the start point. Using the offset you can move the start point clockwise (positive offset) or anti-clockwise (negative offset)
-#define NeoPixel6_TempOffset 0.0  //Minimum Temperature at which the first LED lights up
-#define NeoPixel6_AnimationActive true  //Animation when the Hotend heats up (true = activated / false = deactivated)
-#define NeoPixel6_Reverse false  //Reverse display direction (false = default / true = reversed)
-#define NeoPixel6_Brightness 8  //Overall brightness of the Neopixel-LEDs
-
 // ********** User-Config End **********
 // *************************************
+
+#define COLOR1(x) COLOR(x) // expand a single argument to 3 for COLOR
 
 //Setup Serial Interface
 #if (defined SerialPort)
@@ -199,55 +56,8 @@ AltSoftSerial SoftSerialDebug;  //Uncomment this line if you wish to use a soft 
 
 #define SerialTimeout 1500 // need enough time to finish receiving and processing all the data
 #define NeopixelRefreshSpeed 200
-#define NumberHeaters 5
-#define NumberNeoPixels 6
-
-struct StructNeoPixelConfig {
-  bool Active;
-  uint32_t StartupAnimationColor;
-  int8_t DisplayPrinterObject[(NumberHeaters + 1)];
-  bool DisplayPrinterObjectChangeByFrequency;
-  uint8_t DisplayPrinterObjectPosition;
-  neoPixelType Type;
-  uint16_t LEDs;
-  uint16_t ArduinoPin;
-  int8_t PixelOffset;
-  float TempOffset;
-  bool AnimationActive;
-  bool AnimationReverse;
-  uint8_t Brightness;
-  bool AnimationMemoryActive;
-  bool AnimationMemoryRunning;
-  uint8_t AnimationMemoryPosition;
-  uint8_t AnimationMemoryPosition_Memory;
-  uint8_t AnimationMemoryRangeBegin;
-  uint8_t AnimationMemoryRangeEnd;
-  int8_t AnimationMemoryDisplayPrinterObject;
-  uint8_t AnimationMemoryAnimationColor;
-};  
-StructNeoPixelConfig NeoPixelConfig[NumberNeoPixels];
-
-struct StructHeaterConfig {
-  uint8_t Scale;
-  uint32_t ColorIdle;
-  uint32_t ColorHeatUp;
-  uint32_t ColorHeatUpDone;
-  uint32_t ColorCoolDown;
-  uint32_t ColorAnimation;
-};
-StructHeaterConfig HeaterConfig[NumberHeaters];
 
 StructPanelDueMessage Printer;
-
-#define TMP_DISPLAY_PRINTER_OBJECT(x) \
-int8_t TmpDisplayPrinterObject##x[(NumberHeaters + 2)] = {NeoPixel ## x ## _DisplayPrinterObject , -1};
-
-TMP_DISPLAY_PRINTER_OBJECT(1)
-TMP_DISPLAY_PRINTER_OBJECT(2)
-TMP_DISPLAY_PRINTER_OBJECT(3)
-TMP_DISPLAY_PRINTER_OBJECT(4)
-TMP_DISPLAY_PRINTER_OBJECT(5)
-TMP_DISPLAY_PRINTER_OBJECT(6)
 
 int8_t DisplayPrinterObject;
 uint8_t PrinterObjectPos;
@@ -263,10 +73,6 @@ uint8_t HeaterID;
 bool InitialSerialMessageSuccess;
 
 Adafruit_NeoPixel *NeoPixel_Device[NumberNeoPixels];
-
-static uint32_t  ConvertColor(uint8_t red, uint8_t green, uint8_t blue) {
-  return ((uint32_t)red << 16) | ((uint32_t)green <<  8) | blue;
-}
 
 static int ConvertPosition2PixelIndex(int PixelCount, int PixelOffset, int Position, bool ReverseDirection) {
   int newposition;
@@ -334,37 +140,6 @@ void GetSerialMessage() {
   }
 }
 
-#define SETUP_NEOPIXEL_CONFIG(x) { \
-  NeoPixelConfig[x - 1].Active = NeoPixel ## x ## _Active; \
-  NeoPixelConfig[x - 1].StartupAnimationColor = ConvertColor(NeoPixel ## x ## _StartupAnimationColor); \
-  NeoPixelConfig[x - 1].DisplayPrinterObjectChangeByFrequency = NeoPixel ## x ## _DisplayPrinterObjectCycleByFrequency; \
-  NeoPixelConfig[x - 1].DisplayPrinterObjectPosition = 0; \
-  NeoPixelConfig[x - 1].Type = NeoPixel ## x ## _Type; \
-  NeoPixelConfig[x - 1].LEDs = NeoPixel ## x ## _LEDs; \
-  NeoPixelConfig[x - 1].ArduinoPin = NeoPixel ## x ## _ArduinoPin; \
-  NeoPixelConfig[x - 1].PixelOffset = NeoPixel ## x ## _PixelOffset; \
-  NeoPixelConfig[x - 1].TempOffset = NeoPixel ## x ## _TempOffset; \
-  NeoPixelConfig[x - 1].AnimationActive = NeoPixel ## x ## _AnimationActive; \
-  NeoPixelConfig[x - 1].AnimationReverse = NeoPixel ## x ## _Reverse; \
-  NeoPixelConfig[x - 1].Brightness = NeoPixel ## x ## _Brightness; \
-}
-
-#define SETUP_HEATER_CONFIG(x) { \
-  HeaterConfig[x].Scale = Heater ## x ## _Scale; \
-  HeaterConfig[x].ColorIdle = ConvertColor(Heater ## x ## _ColorIdle); \
-  HeaterConfig[x].ColorHeatUp = ConvertColor(Heater ## x ## _ColorHeatUp); \
-  HeaterConfig[x].ColorHeatUpDone = ConvertColor(Heater ## x ## _ColorHeatUpDone); \
-  HeaterConfig[x].ColorCoolDown = ConvertColor(Heater ## x ## _ColorCoolDown); \
-  HeaterConfig[x].ColorAnimation = ConvertColor(Heater ## x ## _ColorAnimation); \
-}
-
-#define SETUP_NEOPIXEL_DISPLAY(x) { \
-  for (NeoPixelID = 0; TmpDisplayPrinterObject ## x [NeoPixelID] != -1; NeoPixelID++) { \
-    NeoPixelConfig[x - 1].DisplayPrinterObject[NeoPixelID] = TmpDisplayPrinterObject ## x [NeoPixelID]; \
-  } \
-  NeoPixelConfig[x - 1].DisplayPrinterObject[NeoPixelID] = -1; \
-}
-
 // Initialize everything and prepare to start
 void setup()
 {   
@@ -375,31 +150,7 @@ void setup()
   uint8_t NeoPixelAnimationCount;
   uint8_t NeoPixelAnimationID;
   uint32_t AnimiationColor[NumberNeoPixels];
-
-  SETUP_NEOPIXEL_CONFIG(1)
-  SETUP_NEOPIXEL_CONFIG(2)
-  SETUP_NEOPIXEL_CONFIG(3)
-  SETUP_NEOPIXEL_CONFIG(4)
-  SETUP_NEOPIXEL_CONFIG(5)
-  SETUP_NEOPIXEL_CONFIG(6)
   
-  SETUP_NEOPIXEL_DISPLAY(1)
-  SETUP_NEOPIXEL_DISPLAY(2)
-  SETUP_NEOPIXEL_DISPLAY(3)
-  SETUP_NEOPIXEL_DISPLAY(4)
-  SETUP_NEOPIXEL_DISPLAY(5)
-  SETUP_NEOPIXEL_DISPLAY(6)
-
-  SETUP_HEATER_CONFIG(0)
-  SETUP_HEATER_CONFIG(1)
-  SETUP_HEATER_CONFIG(2)
-  SETUP_HEATER_CONFIG(3)
-  SETUP_HEATER_CONFIG(4)
-  
-//  for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
-//    NeoPixel_Device[NeoPixelID] = new Adafruit_NeoPixel(NeoPixelConfig[NeoPixelID].LEDs, NeoPixelConfig[NeoPixelID].ArduinoPin, NeoPixelConfig[NeoPixelID].Type);
-//  }  
-
   // Initialize Neopixels
   for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++){
     if (NeoPixelConfig[NeoPixelID].Active == true) {
@@ -477,7 +228,7 @@ void setup()
           NeoPixelAnimationID = NeoPixelAnimationStep;
           for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++) {
             if (NeoPixelConfig[NeoPixelID].Active == true) {
-              NeoPixel_Device[NeoPixelID]->fill(ConvertColor(0, 0, 0));
+              NeoPixel_Device[NeoPixelID]->fill(COLOR(0, 0, 0));
               NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,(NeoPixelLEDID + 1), NeoPixelConfig[NeoPixelID].AnimationReverse), AnimiationColor[NeoPixelAnimationID]); 
               NeoPixel_Device[NeoPixelID]->show();
             }  
@@ -562,7 +313,7 @@ void loop()
     NeoPixelTimerRefresh = millis();
 
     //Change PrinterObject?
-    if ((millis() - NeoPixelTimerToggleDisplayPrinterObject) >= (DisplayPrinterObjectCylceFrequency * 1000)) {
+    if ((millis() - NeoPixelTimerToggleDisplayPrinterObject) >= (DisplayPrinterObjectCycleFrequency * 1000)) {
       NeoPixelTimerToggleDisplayPrinterObject = millis();
       ToggleDisplayPrinterObject = true;
     }  
@@ -666,10 +417,10 @@ void loop()
               for (NeoPixelLEDID = 1; NeoPixelLEDID <= NeoPixelConfig[NeoPixelID].LEDs; NeoPixelLEDID++)
               {
                 if(NeoPixelLEDID < (Printer.FractionPrinted() * NeoPixelConfig[NeoPixelID].LEDs)) {
-                  NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelLEDID,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorPrintingDone));
+                  NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelLEDID,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorPrintingDone));
                 }
                 else {
-                  NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelLEDID,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorPrinting));
+                  NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelLEDID,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorPrinting));
                   //Define Animation-Range
                   if (NeoPixelConfig[NeoPixelID].AnimationMemoryRangeBegin == 0) {
                     NeoPixelConfig[NeoPixelID].AnimationMemoryRangeBegin = NeoPixelLEDID;
@@ -694,34 +445,34 @@ void loop()
               switch (Printer.Status)
               {
                 case 'I':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorIdle));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorIdle));
                   break;
                 case 'P':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorPrinting));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorPrinting));
                   break;
                 case 'S':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorStopped));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorStopped));
                   break;
                 case 'C':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorConfiguring));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorConfiguring));
                   break;
                 case 'A':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorPaused));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorPaused));
                   break;
                 case 'D':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorBusy));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorBusy));
                   break;
                 case 'R':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorPausing));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorPausing));
                   break;
                 case 'B':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorResuming));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorResuming));
                   break;
                 case 'F':
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorFlashing));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorFlashing));
                   break;
                 default:
-                  NeoPixel_Device[NeoPixelID]->fill(ConvertColor(PrinterStatus_ColorDefault));
+                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorDefault));
                   break;
               }    
             }
@@ -757,8 +508,8 @@ void loop()
               NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),HeaterConfig[NeoPixelConfig[NeoPixelID].AnimationMemoryDisplayPrinterObject].ColorAnimation);
             }
             else {  
-              NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition_Memory,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorPrinting));
-              NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorAnimation));
+              NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition_Memory,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorPrinting));
+              NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorAnimation));
             }
             NeoPixelConfig[NeoPixelID].AnimationMemoryAnimationColor = 1;
           }
@@ -769,7 +520,7 @@ void loop()
                 NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),HeaterConfig[NeoPixelConfig[NeoPixelID].AnimationMemoryDisplayPrinterObject].ColorAnimation);
               }
               else {
-                NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorAnimation));
+                NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorAnimation));
               }
               NeoPixelConfig[NeoPixelID].AnimationMemoryAnimationColor = 1;
             }
@@ -779,7 +530,7 @@ void loop()
                 NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),HeaterConfig[NeoPixelConfig[NeoPixelID].AnimationMemoryDisplayPrinterObject].ColorHeatUp);
               }  
               else {
-                NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),ConvertColor(PrinterStatus_ColorPrinting));
+                NeoPixel_Device[NeoPixelID]->setPixelColor(ConvertPosition2PixelIndex(NeoPixelConfig[NeoPixelID].LEDs,NeoPixelConfig[NeoPixelID].PixelOffset,NeoPixelConfig[NeoPixelID].AnimationMemoryPosition,NeoPixelConfig[NeoPixelID].AnimationReverse),COLOR1(PrinterStatus_ColorPrinting));
               }
               NeoPixelConfig[NeoPixelID].AnimationMemoryAnimationColor = 0;
             }
