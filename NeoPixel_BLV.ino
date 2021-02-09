@@ -86,8 +86,8 @@ AltSoftSerial SoftSerialDebug;  //Uncomment this line if you wish to use a soft 
 //NeoPixel#1
 #define NeoPixel1_Active true  //NeoPixel#1 (true = activated / false = deactivated)
 #define NeoPixel1_StartupAnimationColor 0,0,255  //RGB values for StartupAnimation
-#define NeoPixel1_DisplayPrinterObject 99  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
-#define NeoPixel1_DisplayPrinterObjectCycleByFrequency false  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
+#define NeoPixel1_DisplayPrinterObject 1,99  //PrinterObject(s) to be displayed by NeoPixel: 0= Heatbed / 1= Heater#1 / 2= Heater#2 / 3= Heater#3 / 4= Heater#4 / 99= PrinterStatus => Multiple PrinterObjects seperated by ,
+#define NeoPixel1_DisplayPrinterObjectCycleByFrequency true  //If multiple PrinterObjects (Heater(s), PrinterStatus) should be displayed by a single Neopixel: false= Cycle PrinterObject depending on status of heaters / true= Cycle PrinterObject every x seconds as set by DisplayPrinterObjectCylceFrequency
 #define NeoPixel1_Type NEO_GRB + NEO_KHZ800  //Neopixel type (do not change if using NeoPixel from the BOM)
 #define NeoPixel1_LEDs 16  //Number of Neopixel-LEDs (do not change if using Neopixel from the BOM)
 #define NeoPixel1_ArduinoPin 7  //Arduino pin used to control the Neopixel (do not change if using the wiring diagram from Ben Levi)
@@ -297,6 +297,7 @@ static int ConvertPosition2PixelIndex(int PixelCount, int PixelOffset, int Posit
 void GetSerialMessage() {
   unsigned long timer = millis();
   bool SerialMessageBegin = false;
+  bool messageComplete = false;
   char inChar;
   JsonStreamingParser parser;
   StreamingHandler handler;
@@ -305,14 +306,14 @@ void GetSerialMessage() {
   Printer.reset();
   uint16_t bytesRead = 0;
 
-  while(!Printer.complete && ((millis() - timer) <= SerialTimeout))
+  while(!messageComplete && ((millis() - timer) <= SerialTimeout))
   {    
 
-    while(!Printer.complete && ((millis() - timer) <= SerialTimeout) && SerialObject.available() > 0) 
+    while(!messageComplete && ((millis() - timer) <= SerialTimeout) && SerialObject.available() > 0) 
     {
       inChar = SerialObject.read();
-      if (inChar == '\n') Printer.complete = true;
-      bytesRead += 1;
+      if (inChar == '\n') messageComplete = true;
+      else bytesRead += 1;
       
       if (inChar=='{')
         SerialMessageBegin = true;
@@ -321,13 +322,11 @@ void GetSerialMessage() {
         parser.parse(inChar);
     }
   }  
-  if ((millis() - timer) > SerialTimeout && !Printer.complete) {
-    if (bytesRead > 0) {
-      DEBUG1F(F("\nmsg timeout ")) DEBUG1(bytesRead)
-      // turn LED on to indicate message failed to parse
-      digitalWrite(LED_BUILTIN, HIGH);
-    }
-  } else if (Printer.complete && bytesRead > 1) {
+  if ((millis() - timer) > SerialTimeout && !messageComplete && bytesRead > 0) {
+    DEBUG1F(F("\nmsg timeout ")) DEBUG1(bytesRead)
+    // turn LED on to indicate message failed to parse
+    digitalWrite(LED_BUILTIN, HIGH);
+  } else if (Printer.complete) {
     digitalWrite(LED_BUILTIN, LOW);
     if (Printer.UpdatePending) {
       DEBUG1F(F("\n")) DEBUG1F(bytesRead) DEBUG1F(F(" bytes read, job %: ")) DEBUG1(String(Printer.FractionPrinted(), 3))
@@ -540,6 +539,13 @@ void setup()
 }
 
 
+#define FIND_ACTIVE_OBJECT(cond) { \
+  for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) { \
+    PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos]; \
+    if (cond) {DisplayPrinterObject = PrinterObject;} \
+  } \
+}
+
 // Main loop
 void loop()
 {
@@ -577,25 +583,13 @@ void loop()
           if (NeoPixelConfig[NeoPixelID].DisplayPrinterObjectChangeByFrequency == false) {
             //Multiple PrinterObjects: Change PrinterObject by HeaterStatus
             //Check for Printerobject = 99 (PrinterStatus)
-            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
-              if (PrinterObject == 99) {DisplayPrinterObject = PrinterObject;}
-            }
+            FIND_ACTIVE_OBJECT(PrinterObject == 99)
             //Determine first "active" heater
-            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
-              if (Printer.Heater_Status[PrinterObject] == 2) {DisplayPrinterObject = PrinterObject;}
-            }
+            FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 2)
             //Determine first "standby" heater
-            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
-              if (Printer.Heater_Status[PrinterObject] == 1) {DisplayPrinterObject = PrinterObject;}
-            }
+            FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 1)
             //Determine first "off" heater
-            for (PrinterObjectPos = 0; DisplayPrinterObject == -1 && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos] != -1; PrinterObjectPos++) {
-              PrinterObject = NeoPixelConfig[NeoPixelID].DisplayPrinterObject[PrinterObjectPos];
-              if (Printer.Heater_Status[PrinterObject] == 0) {DisplayPrinterObject = PrinterObject;}
-            }
+            FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 0)
           }
           else {
             //Multiple PrinterObjects: Change PrinterObjects by Frequency
