@@ -297,6 +297,8 @@ void setup()
   } \
 }
 
+#define IS_HOT (Printer.Heater_ActTemp[PrinterObject] >= 50)
+#define IS_PRINTERSTATUS (PrinterObject == 99)
 // Main loop
 void loop()
 {
@@ -333,13 +335,20 @@ void loop()
         else {
           if (NeoPixelConfig[NeoPixelID].DisplayPrinterObjectChangeByFrequency == false) {
             //Multiple PrinterObjects: Change PrinterObject by HeaterStatus
-            //Check for Printerobject = 99 (PrinterStatus)
-            FIND_ACTIVE_OBJECT(PrinterObject == 99)
+            // find a heater that is heating up still
+            FIND_ACTIVE_OBJECT(!IS_PRINTERSTATUS && Printer.Heater_Status[PrinterObject] == 2 && Printer.Heater_ActTemp[PrinterObject] < Printer.Heater_ActiveTemp[PrinterObject] - HeaterConfig[PrinterObject].Scale)
+            //Check for Printerobject = 99 (PrinterStatus) and printing, busy, paused/ing, resuming
+            FIND_ACTIVE_OBJECT(IS_PRINTERSTATUS && strchr_P(PSTR("PDRBA"), Printer.Status) != NULL)
             //Determine first "active" heater
-            FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 2)
-            //Determine first "standby" heater
+            FIND_ACTIVE_OBJECT(!IS_PRINTERSTATUS && Printer.Heater_Status[PrinterObject] == 2)
+            //Determine first "standby" heater && >50C
+            FIND_ACTIVE_OBJECT(!IS_PRINTERSTATUS && Printer.Heater_Status[PrinterObject] == 1 && IS_HOT)
+            //Determine first "off" heater && >50C
+            FIND_ACTIVE_OBJECT(!IS_PRINTERSTATUS && Printer.Heater_Status[PrinterObject] == 0 && IS_HOT)
+
+            // otherwise show printer status if set, fall back to standby and off heaters
+            FIND_ACTIVE_OBJECT(IS_PRINTERSTATUS)
             FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 1)
-            //Determine first "off" heater
             FIND_ACTIVE_OBJECT(Printer.Heater_Status[PrinterObject] == 0)
           }
           else {

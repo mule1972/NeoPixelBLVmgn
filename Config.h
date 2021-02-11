@@ -32,7 +32,7 @@ StructNeoPixelConfig NeoPixelConfig[NumberNeoPixels] = {
     Active                                : true,
     StartupAnimationColor                 : COLOR(0, 0, 255),
     DisplayPrinterObject                  : { 1, 99, -1 },
-    DisplayPrinterObjectChangeByFrequency : true,
+    DisplayPrinterObjectChangeByFrequency : false,
     Type                                  : NEO_GRB + NEO_KHZ800,
     LEDs                                  : 16,
     ArduinoPin                            : 7,
