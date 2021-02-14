@@ -63,7 +63,7 @@ StructNeoPixelConfig NeoPixelConfig[NumberNeoPixels] = {
     DisplayPrinterObjectChangeByFrequency : false,
     Type                                  : NEO_GRB + NEO_KHZ800,
     LEDs                                  : 16,
-#if defined(DEBUGLEVEL1_ACTIVE) || defined(DEBUGLEVEL2_ACTIVE)
+#if !defined(DEBUGLEVEL1_ACTIVE) && !defined(DEBUGLEVEL2_ACTIVE)
     ArduinoPin                            : 8,
 #else
     ArduinoPin                            : 11, // move this neopixel to pin 11 if debugging is enabled
