@@ -31,7 +31,7 @@ StructNeoPixelConfig NeoPixelConfig[NumberNeoPixels] = {
   { // Neopixel 1
     Active                                : true,
     StartupAnimationColor                 : COLOR(0, 0, 255),
-    DisplayPrinterObject                  : { 1, 99, -1 },
+    DisplayPrinterObject                  : { 1, 0, 99, -1 },
     DisplayPrinterObjectChangeByFrequency : false,
     Type                                  : NEO_GRB + NEO_KHZ800,
     LEDs                                  : 16,

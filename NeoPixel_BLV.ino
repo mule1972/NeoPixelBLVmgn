@@ -299,9 +299,23 @@ void setup()
 
 #define IS_HOT (Printer.Heater_ActTemp[PrinterObject] >= 50)
 #define IS_PRINTERSTATUS (PrinterObject == 99)
+#define UPDATE_THRESHOLD 5000
+#define ACTIVE_UPDATE_THRESHOLD 1000
 // Main loop
 void loop()
 {
+  // Request update from duet board
+  static unsigned long lastUpdate = 0;
+  unsigned long loopStart = millis();
+
+  // supports duet3, enable uart on port 2 (io1): M575 P2 S1 B57600
+  // additionally, this can enable duet2 neopixels without paneldue, connect arduino tx to duet rx through a level shifter
+  // do not connect tx to rx on duet 2 without a level shifter, you will fry your duet. do not connect tx to rx if a paneldue is connected
+  if (loopStart - lastUpdate > (Printer.Status != 'I' ? ACTIVE_UPDATE_THRESHOLD : UPDATE_THRESHOLD)) {
+    Serial.println("M409 F\"d99f\"");
+    lastUpdate = loopStart;
+  }
+
   //Read serial
   GetSerialMessage();
 
