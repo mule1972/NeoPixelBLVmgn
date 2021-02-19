@@ -1,8 +1,7 @@
-#include <JsonStreamingParser.h>
-
 #include <Adafruit_NeoPixel.h>
 #include <AltSoftSerial.h>
 
+#include "src/json/JsonStreamingParser.h"
 #include "Structures.h"
 #include "Debugging.h"
 #include "Config.h"
