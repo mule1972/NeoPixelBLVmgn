@@ -1,4 +1,4 @@
-Note: Für RepRap firmware prior to V3.x please use release V3.0 (V4.x is not compatible).
+Note: Für RepRap firmware prior to V3.x please use release V3.0 (V4.x is not compatible) of the NeoPixel sketch.
 
 # About
 This is a NeoPixel sketch for the great 3D-Printer project from Ben Levi (https://www.thingiverse.com/thing:3382718)
