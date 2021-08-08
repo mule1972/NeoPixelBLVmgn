@@ -14,13 +14,14 @@ class StructPanelDueMessage {
   float Heater_StandbyTemp[NumberHeaters];
   bool UpdatePending;
   // prevent divby0
-  inline float FractionPrinted() { return printDuration / (float) max(1, printDuration + printRemaining); }
+  inline float FractionPrinted() { return (printDuration - printWarmUpDuration) / (float) max(1, ((printDuration - printWarmUpDuration) + printRemaining)); }
   inline void reset() { UpdatePending = false; complete = false; }
   bool complete = false;
   private:
-  inline void resetPrinting() { printDuration = 0; printRemaining = 0; }
+  inline void resetPrinting() { printDuration = 0; printRemaining = 0; printWarmUpDuration = 0;}
   uint16_t printDuration = 0;
   uint16_t printRemaining = 0;
+  uint16_t printWarmUpDuration = 0;
 };
 
 const String EMPTY("");
