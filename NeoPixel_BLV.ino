@@ -329,6 +329,11 @@ void loop()
       
     //Update Neopixels
     for (NeoPixelID = 0; NeoPixelID < NumberNeoPixels; NeoPixelID++) {
+      if (Printer.Status == 'S') {
+        NeoPixel_Device[NeoPixelID]->fill(0);
+        continue;
+      }
+
       if (NeoPixelConfig[NeoPixelID].Active == true && NeoPixelConfig[NeoPixelID].DisplayPrinterObject[0] != -1) {
         //Determine PrinterObject to show
         DisplayPrinterObject = -1;
@@ -469,7 +474,7 @@ void loop()
                   NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorPrinting));
                   break;
                 case 'S':
-                  NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorStopped));
+                  NeoPixel_Device[NeoPixelID]->fill(0);
                   break;
                 case 'C':
                   NeoPixel_Device[NeoPixelID]->fill(COLOR1(PrinterStatus_ColorConfiguring));

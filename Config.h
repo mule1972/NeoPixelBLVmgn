@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Adafruit_Neopixel.h>
+#include <Adafruit_NeoPixel.h>
 #include "Structures.h"
 
 #define NeoPixelStartupAnimationActive true  //Show Startup Animation for all Neopixels (true = activated / false = deactivated) !!Attention!! Animation will only be played if all NeoPixels have the same number of LEDs
